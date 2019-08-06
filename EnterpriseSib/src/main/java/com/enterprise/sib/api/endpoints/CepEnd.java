@@ -1,0 +1,33 @@
+package com.enterprise.sib.api.endpoints;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+
+@Api()
+@RestController
+@RequestMapping("/enterprise")
+public class CepEnd {
+
+	@ApiOperation(value="Consulta de cep",tags = "Enterprise SIB Endpoints")
+	@GetMapping(path = "/consultar_cep", produces = "application/json")
+	public String obtemCpf() {
+	
+		return "    {\r\n" + 
+				"      \"cep\": \"01001-000\",\r\n" + 
+				"      \"logradouro\": \"Praça da Sé\",\r\n" + 
+				"      \"complemento\": \"lado ímpar\",\r\n" + 
+				"      \"bairro\": \"Sé\",\r\n" + 
+				"      \"localidade\": \"São Paulo\",\r\n" + 
+				"      \"uf\": \"SP\",\r\n" + 
+				"      \"unidade\": \"\",\r\n" + 
+				"      \"ibge\": \"3550308\",\r\n" + 
+				"      \"gia\": \"1004\"\r\n" + 
+				"    }";
+		
+	}
+}
