@@ -16,8 +16,6 @@ public class DataHoraMdl {
 	}
 	public void setHora(String hora) {
 		this.hora = hora;
-	}
-	
-	
+	}	
 
 }

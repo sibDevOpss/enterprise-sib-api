@@ -25,8 +25,19 @@ public class CpfEnd {
 		
 		cpfController.gravaLog(params);
 		
-		
 		return "{\"Nome\":\"Mateus\", \"Idade\":27, \"CPF\":\"578.984.324-95\"}";
+		
+	}
+	
+	@ApiOperation(value="Consulta de cpf em massa",tags = "Enterprise SIB Endpoints")
+	@PostMapping(path = "/consultar_cpf_em_massa", produces = "application/json", consumes = "application/json")
+	public String obtemCpfEmLotes(@RequestBody ParamsConsultaCpfMdl params) {
+//	
+//		CpfCtrl cpfController = new CpfCtrl();
+//		
+//		cpfController.gravaLog(params);
+		
+		return "{\"Descricao pt 1\":\"Mandar uma lista de cpf como parametro\", \"Descricao pt 2\":\"Amanha eu faço\", \"Descricao pt 3\":\"Ainda em desenvolvimento\"}";
 		
 	}
 }

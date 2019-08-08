@@ -1,6 +1,7 @@
 package com.enterprise.sib.utilitarios;
 
 import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -9,19 +10,23 @@ import com.enterprise.sib.api.models.ParamsConsultaCpfMdl;
 
 public class Utils {
 
-	public void gravarArquivoLog (String basePath, String nomeArq, String conteudo) {
+	public void gravarArquivoLog (String basePath, String nomeArq, String infoLog) {
 
-		try{    
-			FileWriter fw = new FileWriter(basePath+nomeArq);
-			System.out.println(basePath+nomeArq);
-			System.out.println(conteudo);
-			fw.write(conteudo);    
-			fw.close();    
-			System.out.println("[Succeso] arquivo " + nomeArq + " criado...");    
-		}catch(Exception e){
-			System.out.println(e);
+		gravar(basePath, "Logs.txt", infoLog);
+		gravar(basePath, nomeArq, infoLog);
+
+	}
+
+	public void gravar (String basePath, String nomeArq, String infoLog) {
+		
+		try {
+			PrintWriter output = new PrintWriter(new FileWriter(basePath+nomeArq,true));
+			output.printf("%s\r\n", infoLog);
+			output.close(); 
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
+		
 	}
 
 	public LocalDateTime obtemDataHoraAtual () {
@@ -46,23 +51,24 @@ public class Utils {
 		return dadosLog;
 	}
 
-	public DadosLogMdl defineNomeOperadoraECpf (DadosLogMdl dadosLog, ParamsConsultaCpfMdl params) {
+	public DadosLogMdl defineNomeOperadoraCpfEUsuarioOperadora (DadosLogMdl dadosLog, ParamsConsultaCpfMdl params) {
 
 		dadosLog.getParamsConsulta().setCpf(params.getCpf());
 		dadosLog.getParamsConsulta().setNomeOperadora(params.getNomeOperadora());
+		dadosLog.getParamsConsulta().setNomeUsuario(params.getNomeUsuario());
 
 		return dadosLog;
 
 	}
 
-	public String obtemCaminhoCompletoDadosSaidaLog (DadosLogMdl dadosLog, String extensaoArqLog) {
+	public String obtemNomeArqSaidaLog (DadosLogMdl dadosLog, String extensaoArqLog) {
 		return dadosLog.getParamsConsulta().getNomeOperadora() + extensaoArqLog;
 
 	}
 
 	public String criaDadosLog (DadosLogMdl dadosLog) {
 
-		return "Operadora : " + dadosLog.getParamsConsulta().getNomeOperadora() + " | " + "CPF Buscado : " + dadosLog.getParamsConsulta().getCpf() + " | " + "Data : " + dadosLog.getDataHora().getData() + " | " + "Horario : " + dadosLog.getDataHora().getHora();
+		return "Usuario : " + dadosLog.getParamsConsulta().getNomeUsuario() + " | Operadora : " + dadosLog.getParamsConsulta().getNomeOperadora() + " | CPF Buscado : " + dadosLog.getParamsConsulta().getCpf() + " | Data : " + dadosLog.getDataHora().getData() + " | Horario : " + dadosLog.getDataHora().getHora();
 
 	}
 

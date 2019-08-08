@@ -25,13 +25,14 @@ public class CpfCtrl {
 
 		DadosLogMdl dadosLog = utilitarios.defineDataHoraLocal(dataHoraConsulta, formataDataHora);
 
-		dadosLog = utilitarios.defineNomeOperadoraECpf(dadosLog, params);
+		dadosLog = utilitarios.defineNomeOperadoraCpfEUsuarioOperadora(dadosLog, params);
 
-		String log = utilitarios.criaDadosLog(dadosLog);
+		String infoLog = utilitarios.criaDadosLog(dadosLog);
 
-		String pathCompletoSaidaDadosLog = utilitarios.obtemCaminhoCompletoDadosSaidaLog(dadosLog,extensaoArqLog);
+		String nomeArqLog = utilitarios.obtemNomeArqSaidaLog(dadosLog,extensaoArqLog);
 		
-		utilitarios.gravarArquivoLog(pathSaidaDadosLog ,pathCompletoSaidaDadosLog, log);
+		utilitarios.gravarArquivoLog(pathSaidaDadosLog ,nomeArqLog, infoLog);
+		
 
 	}
 	
