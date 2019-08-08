@@ -1,0 +1,57 @@
+﻿[
+	{
+	  "cpf": "01895845130",
+	  "nome": "RENATO SOUZA DE ALMEIDA",
+	  "situacao": "REGULAR",
+	  "digito": "00",
+	  "dataNascimento": "26/04/1988",
+	  "anoObito": "0000",
+	  "dataInscricao": "31/03/2004",
+	  "dataHora": "07/08/2019 21:02:10",
+	  "comprovante": "8DF2.0582.757F.7C74"
+	},
+	{
+	  "cpf": "01895845132",
+	  "nome": "BOB",
+	  "situacao": "MORTO EM COMBATE",
+	  "digito": "00",
+	  "dataNascimento": "15/04/1912",
+	  "anoObito": "0000",
+	  "dataInscricao": "31/03/2009",
+	  "dataHora": "07/08/2019 17:12:10",
+	  "comprovante": "8DF2.0582.757F.7C71"
+	},
+	{
+	  "cpf": "01895845133",
+	  "nome": "VARGARS",
+	  "situacao": "VIVO",
+	  "digito": "01",
+	  "dataNascimento": "15/04/1812",
+	  "anoObito": "0000",
+	  "dataInscricao": "31/03/2012",
+	  "dataHora": "07/08/2019 13:04:10",
+	  "comprovante": "8DF2.0582.757F.8C72"
+	},
+	{
+	  "cpf": "01895845134",
+	  "nome": "BORIS",
+	  "situacao": "VIAJANDO",
+	  "digito": "00",
+	  "dataNascimento": "07/11/1912",
+	  "anoObito": "0000",
+	  "dataInscricao": "22/05/2004",
+	  "dataHora": "07/08/2019 15:09:10",
+	  "comprovante": "8DF2.0582.757F.7C75"
+	},
+	{
+	  "cpf": "01895845135",
+	  "nome": "DIMITRI",
+	  "situacao": "ALMOÇANDO",
+	  "digito": "40",
+	  "dataNascimento": "17/09/1982",
+	  "anoObito": "0000",
+	  "dataInscricao": "31/08/2005",
+	  "dataHora": "07/08/2019 07:03:10",
+	  "comprovante": "8DF2.0582.757F.7C71"
+	}
+]
