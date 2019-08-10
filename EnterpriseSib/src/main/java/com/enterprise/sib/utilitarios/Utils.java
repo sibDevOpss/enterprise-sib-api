@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import com.enterprise.sib.api.models.DadosLogMdl;
+import com.enterprise.sib.api.models.ParamsConsultaCpfMassaMdl;
 import com.enterprise.sib.api.models.ParamsConsultaCpfMdl;
 
 public class Utils {
@@ -51,11 +52,23 @@ public class Utils {
 		return dadosLog;
 	}
 
-	public DadosLogMdl defineNomeOperadoraCpfEUsuarioOperadora (DadosLogMdl dadosLog, ParamsConsultaCpfMdl params) {
+	public DadosLogMdl defineDadosLogCpf (DadosLogMdl dadosLog, ParamsConsultaCpfMdl params) {
 
 		dadosLog.getParamsConsulta().setCpf(params.getCpf());
 		dadosLog.getParamsConsulta().setNomeOperadora(params.getNomeOperadora());
 		dadosLog.getParamsConsulta().setNomeUsuario(params.getNomeUsuario());
+		dadosLog.getParamsConsulta().setCodigoOperadora(params.getCodigoOperadora());
+
+		return dadosLog;
+
+	}
+	
+	public DadosLogMdl defineDadosLogCpfMassa (DadosLogMdl dadosLog, ParamsConsultaCpfMassaMdl params, String cpfsConcatenados) {
+
+		dadosLog.getParamsConsulta().setNomeOperadora(params.getNomeOperadora());
+		dadosLog.getParamsConsulta().setCodigoOperadora(params.getCodigoOperadora());
+		dadosLog.getParamsConsulta().setNomeUsuario(params.getNomeUsuario());
+		dadosLog.getParamsConsulta().setCpf(cpfsConcatenados);
 
 		return dadosLog;
 
@@ -68,7 +81,7 @@ public class Utils {
 
 	public String criaDadosLog (DadosLogMdl dadosLog) {
 
-		return "Usuario : " + dadosLog.getParamsConsulta().getNomeUsuario() + " | Operadora : " + dadosLog.getParamsConsulta().getNomeOperadora() + " | CPF Buscado : " + dadosLog.getParamsConsulta().getCpf() + " | Data : " + dadosLog.getDataHora().getData() + " | Horario : " + dadosLog.getDataHora().getHora();
+		return "Usuario : " + dadosLog.getParamsConsulta().getNomeUsuario() + " | Operadora : " + dadosLog.getParamsConsulta().getNomeOperadora() + " | Codigo Operadora : " + dadosLog.getParamsConsulta().getCodigoOperadora() + " | CPFs Buscados : " + dadosLog.getParamsConsulta().getCpf() + " | Data : " + dadosLog.getDataHora().getData() + " | Horario : " + dadosLog.getDataHora().getHora();
 
 	}
 

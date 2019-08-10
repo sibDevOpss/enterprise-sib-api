@@ -10,13 +10,16 @@ import java.util.List;
 
 import com.enterprise.sib.api.models.CpfRespMdl;
 import com.enterprise.sib.api.models.DadosLogMdl;
+import com.enterprise.sib.api.models.ParamsConsultaCpfMassaMdl;
 import com.enterprise.sib.api.models.ParamsConsultaCpfMdl;
 import com.enterprise.sib.utilitarios.Utils;
 import com.google.gson.Gson;
 
 public class CpfCtrl {
 
-	public void gravaLog(ParamsConsultaCpfMdl params) {
+	
+	// Metodo para gravar o log do endpoint "consultar_cpf" , serve para gravar 1 cpf no log
+	public void gravaLog (ParamsConsultaCpfMdl params) {	
 
 		Utils utilitarios = new Utils();
 
@@ -32,7 +35,7 @@ public class CpfCtrl {
 
 		DadosLogMdl dadosLog = utilitarios.defineDataHoraLocal(dataHoraConsulta, formataDataHora);
 
-		dadosLog = utilitarios.defineNomeOperadoraCpfEUsuarioOperadora(dadosLog, params);
+		dadosLog = utilitarios.defineDadosLogCpf(dadosLog, params);
 
 		String infoLog = utilitarios.criaDadosLog(dadosLog);
 
@@ -42,7 +45,36 @@ public class CpfCtrl {
 
 	}
 	
-	public List<CpfRespMdl> obtemConsultaVariosCpfs(List<String> listaCpfConsultaParams) {
+	// Metodo para gravar o log do endpoint "consultar_cpf_massa" , serve para gravar VÁRIOS cpfs no log
+	public void gravaLogCpfEmMassa (ParamsConsultaCpfMassaMdl params) {
+
+		Utils utilitarios = new Utils();
+
+		String mascaraDataHora = "dd-MM-yyyy HH:mm:ss";
+
+		String pathSaidaDadosLog = "C:\\Users\\Godzilla\\Desktop\\saidas\\";
+
+		String extensaoArqLog = ".txt";
+		
+		String cpfsConcatenados = concatenaListaCpfEmString(params.getListaCpfs());
+
+		LocalDateTime dataHoraConsulta = utilitarios.obtemDataHoraAtual();
+
+		DateTimeFormatter formataDataHora = utilitarios.obtemTipoDataHoraFormatado(mascaraDataHora);
+
+		DadosLogMdl dadosLog = utilitarios.defineDataHoraLocal(dataHoraConsulta, formataDataHora);
+
+		dadosLog = utilitarios.defineDadosLogCpfMassa(dadosLog, params,cpfsConcatenados);
+
+		String infoLog = utilitarios.criaDadosLog(dadosLog);
+
+		String nomeArqLog = utilitarios.obtemNomeArqSaidaLog(dadosLog, extensaoArqLog);
+
+		utilitarios.gravarArquivoLog(pathSaidaDadosLog, nomeArqLog, infoLog);
+
+	}
+	
+	public List<CpfRespMdl> obtemConsultaVariosCpfs (List<String> listaCpfConsultaParams) {
 		
 		CpfRespMdl[] listaCpfMock = obtemListaCpfMock();
 		ArrayList<CpfRespMdl> listaAchados = new ArrayList<CpfRespMdl>();
@@ -79,7 +111,7 @@ public class CpfCtrl {
 		return listaCpfMock;
 	}
 
-	public CpfRespMdl criarCpfTeste() {
+	public CpfRespMdl criarCpfTeste () {
 		CpfRespMdl pessoa = new CpfRespMdl();
 		pessoa.setCpf("01895845130");
 		pessoa.setNome("RENATO SOUZA DE ALMEIDA");
@@ -93,5 +125,27 @@ public class CpfCtrl {
 
 		return pessoa;
 	}
+	
+	public String concatenaListaCpfEmString (List<String> listaCpfs) {
+		
+		String separador=",";
+		StringBuilder cpfsConcatenados = new StringBuilder();
+		 
+		for (int index = 0; index < listaCpfs.size(); index++) {
+			
+			cpfsConcatenados.append(listaCpfs.get(index));
+			
+			if ((index + 1) != listaCpfs.size()) {
+				cpfsConcatenados.append(separador);
+				
+			}
+		}
+	
+		return cpfsConcatenados.toString();
+		
+	}
+	
+	
+	
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.enterprise.sib.api.controllers.CpfCtrl;
 import com.enterprise.sib.api.models.CpfRespMdl;
+import com.enterprise.sib.api.models.ParamsConsultaCpfMassaMdl;
 import com.enterprise.sib.api.models.ParamsConsultaCpfMdl;
 
 import io.swagger.annotations.Api;
@@ -27,7 +28,7 @@ public class CpfEnd {
     public ResponseEntity<CpfRespMdl> obtemCpf(@RequestBody ParamsConsultaCpfMdl params) {
 
         CpfCtrl cpfController = new CpfCtrl();
-//        cpfController.gravaLog(params);
+        //cpfController.gravaLog(params);
 
         return new ResponseEntity<CpfRespMdl>(cpfController.criarCpfTeste(), HttpStatus.BAD_REQUEST);
 
@@ -35,14 +36,15 @@ public class CpfEnd {
 
     @ApiOperation(value = "Consulta de cpf em massa", tags = "Enterprise SIB Endpoints")
     @PostMapping(path = "/consultar_cpf_em_massa", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<List<CpfRespMdl>> obtemCpfEmLotes(@RequestBody List<String> params) {
+    public ResponseEntity<List<CpfRespMdl>> obtemCpfEmLotes(@RequestBody ParamsConsultaCpfMassaMdl params) {
 
 		CpfCtrl cpfController = new CpfCtrl();
-//		cpfController.gravaLog(params);
+		//cpfController.gravaLogCpfEmMassa(params);
     	
-		List<CpfRespMdl> listaCpfsEncontrados = cpfController.obtemConsultaVariosCpfs(params);
+		List<CpfRespMdl> listaCpfsEncontrados = cpfController.obtemConsultaVariosCpfs(params.getListaCpfs());
 		
 		return new ResponseEntity<List<CpfRespMdl>> (listaCpfsEncontrados,HttpStatus.ACCEPTED);
+		
 
     }
 }

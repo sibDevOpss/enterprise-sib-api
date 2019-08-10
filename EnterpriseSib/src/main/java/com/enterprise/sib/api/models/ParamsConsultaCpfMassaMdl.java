@@ -1,19 +1,17 @@
 package com.enterprise.sib.api.models;
 
-public class ParamsConsultaCpfMdl {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ParamsConsultaCpfMassaMdl {
 	
-	String cpf;
 	String nomeOperadora;
 	int codigoOperadora;
 	String dataNascimento;
 	String nomeUsuario;
+	List<String> listaCpfs = new ArrayList<String>();
 	
-	public String getCpf() {
-		return cpf;
-	}
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
+	
 	public String getNomeOperadora() {
 		return nomeOperadora;
 	}
@@ -38,11 +36,13 @@ public class ParamsConsultaCpfMdl {
 	public void setCodigoOperadora(int codigoOperadora) {
 		this.codigoOperadora = codigoOperadora;
 	}
+	public List<String> getListaCpfs() {
+		return listaCpfs;
+	}
+	public void setListaCpfs(List<String> listaCpfs) {
+		this.listaCpfs = listaCpfs;
+	}
 	
 	
 	
-	
-	
-	
-
 }
