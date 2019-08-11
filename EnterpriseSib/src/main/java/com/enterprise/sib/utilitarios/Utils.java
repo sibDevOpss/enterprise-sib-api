@@ -5,7 +5,8 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import com.enterprise.sib.api.models.DadosLogMdl;
+import com.enterprise.sib.api.models.DadosLogCpfMdl;
+import com.enterprise.sib.api.models.DataHoraMdl;
 import com.enterprise.sib.api.models.ParamsConsultaCpfMassaMdl;
 import com.enterprise.sib.api.models.ParamsConsultaCpfMdl;
 
@@ -38,9 +39,9 @@ public class Utils {
 		return DateTimeFormatter.ofPattern(mascara);
 	}
 
-	public DadosLogMdl defineDataHoraLocal (LocalDateTime dataHoraConsulta, DateTimeFormatter formataDataHora) {
+	public DadosLogCpfMdl defineDataHoraLocal (LocalDateTime dataHoraConsulta, DateTimeFormatter formataDataHora) {
 
-		DadosLogMdl dadosLog = new DadosLogMdl();
+		DadosLogCpfMdl dadosLog = new DadosLogCpfMdl();
 
 		String horaDataLocal = dataHoraConsulta.format(formataDataHora); 
 
@@ -52,7 +53,7 @@ public class Utils {
 		return dadosLog;
 	}
 
-	public DadosLogMdl defineDadosLogCpf (DadosLogMdl dadosLog, ParamsConsultaCpfMdl params) {
+	public DadosLogCpfMdl defineDadosLogCpf (DadosLogCpfMdl dadosLog, ParamsConsultaCpfMdl params) {
 
 		dadosLog.getParamsConsulta().setCpf(params.getCpf());
 		dadosLog.getParamsConsulta().setNomeOperadora(params.getNomeOperadora());
@@ -63,7 +64,7 @@ public class Utils {
 
 	}
 	
-	public DadosLogMdl defineDadosLogCpfMassa (DadosLogMdl dadosLog, ParamsConsultaCpfMassaMdl params, String cpfsConcatenados) {
+	public DadosLogCpfMdl defineDadosLogCpfMassa (DadosLogCpfMdl dadosLog, ParamsConsultaCpfMassaMdl params, String cpfsConcatenados) {
 
 		dadosLog.getParamsConsulta().setNomeOperadora(params.getNomeOperadora());
 		dadosLog.getParamsConsulta().setCodigoOperadora(params.getCodigoOperadora());
@@ -74,12 +75,12 @@ public class Utils {
 
 	}
 
-	public String obtemNomeArqSaidaLog (DadosLogMdl dadosLog, String extensaoArqLog) {
+	public String obtemNomeArqSaidaLog (DadosLogCpfMdl dadosLog, String extensaoArqLog) {
 		return dadosLog.getParamsConsulta().getNomeOperadora() + extensaoArqLog;
 
 	}
 
-	public String criaDadosLog (DadosLogMdl dadosLog) {
+	public String criaDadosLog (DadosLogCpfMdl dadosLog) {
 
 		return "Usuario : " + dadosLog.getParamsConsulta().getNomeUsuario() + " | Operadora : " + dadosLog.getParamsConsulta().getNomeOperadora() + " | Codigo Operadora : " + dadosLog.getParamsConsulta().getCodigoOperadora() + " | CPFs Buscados : " + dadosLog.getParamsConsulta().getCpf() + " | Data : " + dadosLog.getDataHora().getData() + " | Horario : " + dadosLog.getDataHora().getHora();
 

@@ -2,11 +2,17 @@ package com.enterprise.sib.api.models;
 
 public class ParamsConsultaCpfMdl {
 	
+
 	String cpf;
 	String nomeOperadora;
 	int codigoOperadora;
 	String dataNascimento;
 	String nomeUsuario;
+	
+	
+	public ParamsConsultaCpfMdl() {
+		
+	}
 	
 	public String getCpf() {
 		return cpf;

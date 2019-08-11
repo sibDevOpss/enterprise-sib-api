@@ -8,19 +8,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.enterprise.sib.api.DAO.CpfDAO;
 import com.enterprise.sib.api.models.CpfRespMdl;
-import com.enterprise.sib.api.models.DadosLogMdl;
+import com.enterprise.sib.api.models.DadosLogCpfMdl;
 import com.enterprise.sib.api.models.ParamsConsultaCpfMassaMdl;
 import com.enterprise.sib.api.models.ParamsConsultaCpfMdl;
 import com.enterprise.sib.utilitarios.Utils;
 import com.google.gson.Gson;
 
+//@Service
 public class CpfCtrl {
-
+	
+//	@Autowired
+//	private CpfDAO cpfDAO2;
+	
+	
 	
 	// Metodo para gravar o log do endpoint "consultar_cpf" , serve para gravar 1 cpf no log
 	public void gravaLog (ParamsConsultaCpfMdl params) {	
-
+		
 		Utils utilitarios = new Utils();
 
 		String mascaraDataHora = "dd-MM-yyyy HH:mm:ss";
@@ -33,7 +44,7 @@ public class CpfCtrl {
 
 		DateTimeFormatter formataDataHora = utilitarios.obtemTipoDataHoraFormatado(mascaraDataHora);
 
-		DadosLogMdl dadosLog = utilitarios.defineDataHoraLocal(dataHoraConsulta, formataDataHora);
+		DadosLogCpfMdl dadosLog = utilitarios.defineDataHoraLocal(dataHoraConsulta, formataDataHora);
 
 		dadosLog = utilitarios.defineDadosLogCpf(dadosLog, params);
 
@@ -41,7 +52,13 @@ public class CpfCtrl {
 
 		String nomeArqLog = utilitarios.obtemNomeArqSaidaLog(dadosLog, extensaoArqLog);
 
-		utilitarios.gravarArquivoLog(pathSaidaDadosLog, nomeArqLog, infoLog);
+		//utilitarios.gravarArquivoLog(pathSaidaDadosLog, nomeArqLog, infoLog);
+		
+//		if (cpfDAO2 != null) { //Voltar aqui depois e ver que merda é essa q nao pega nessa classe
+//			System.out.println("VAMOOOOOOOOOO CONTROLLER");
+//		}else {
+//			System.out.println("DAO NULA CONTROLLER");
+//		}
 
 	}
 	
@@ -62,7 +79,7 @@ public class CpfCtrl {
 
 		DateTimeFormatter formataDataHora = utilitarios.obtemTipoDataHoraFormatado(mascaraDataHora);
 
-		DadosLogMdl dadosLog = utilitarios.defineDataHoraLocal(dataHoraConsulta, formataDataHora);
+		DadosLogCpfMdl dadosLog = utilitarios.defineDataHoraLocal(dataHoraConsulta, formataDataHora);
 
 		dadosLog = utilitarios.defineDadosLogCpfMassa(dadosLog, params,cpfsConcatenados);
 

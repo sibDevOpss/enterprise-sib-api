@@ -5,6 +5,12 @@ public class DataHoraMdl {
 	String data;
 	String hora;
 	
+	
+	public DataHoraMdl() {
+		
+	}
+	
+	
 	public String getData() {
 		return data;
 	}
