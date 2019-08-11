@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class Utils {
 
@@ -55,7 +56,7 @@ public class Utils {
 	public DadosLogCpfMdl defineDadosLogCpf(DadosLogCpfMdl dadosLog, CpfReqMdl params) {
 
 		dadosLog.getParamsConsulta().setCpf(params.getCpf());
-		dadosLog.getParamsConsulta().setNomeOperadora(params.getNomeOperadora());
+		dadosLog.getParamsConsulta().setNomeOperadora(params.getNomeOperadora().toUpperCase());
 		dadosLog.getParamsConsulta().setNomeUsuario(params.getNomeUsuario());
 		dadosLog.getParamsConsulta().setCodigoOperadora(params.getCodigoOperadora());
 
@@ -71,6 +72,25 @@ public class Utils {
 		dadosLog.getParamsConsulta().setCpf(cpfsConcatenados);
 
 		return dadosLog;
+
+	}
+	
+	public String concatenaListaCpfEmString(List<String> listaCpfs) {
+
+		String separador=",";
+		StringBuilder cpfsConcatenados = new StringBuilder();
+
+		for (int index = 0; index < listaCpfs.size(); index++) {
+
+			cpfsConcatenados.append(listaCpfs.get(index));
+
+			if ((index + 1) != listaCpfs.size()) {
+				cpfsConcatenados.append(separador);
+
+			}
+		}
+
+		return cpfsConcatenados.toString();
 
 	}
 

@@ -13,15 +13,15 @@ public class DadosLogCpfJPAMdl {
 	private String nomeOperadora;
 	private String nomeUsuario;
 	private String cpf;
-	private Date data;
-	private Date hora;
+	private String data;
+	private String hora;
 	
 	
 	public DadosLogCpfJPAMdl() {
 	
 	}
 	
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public int getId() {
@@ -68,22 +68,25 @@ public class DadosLogCpfJPAMdl {
 	}
 	
 	
-	@Temporal(TemporalType.DATE)
-	public Date getData() {
+	@Column(name = "data")
+	public String getData() {
 		return data;
 	}
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 	
 	
-	@Temporal(TemporalType.TIME)
-	public Date getHora() {
+	@Column(name = "hora")
+	public String getHora() {
 		return hora;
 	}
-	public void setHora(Date hora) {
+	public void setHora(String hora) {
 		this.hora = hora;
 	}
-
+	
+	
+	
+	
 
 }

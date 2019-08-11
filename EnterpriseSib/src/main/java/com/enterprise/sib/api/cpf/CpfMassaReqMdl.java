@@ -9,7 +9,7 @@ public class CpfMassaReqMdl {
 	private int codigoOperadora;
 	private String dataNascimento;
 	private String nomeUsuario;
-	private List<String> listaCpfs = new ArrayList<>();
+	private List<String> listaCpfs = new ArrayList<String>();
 	
 	
 	public String getNomeOperadora() {
