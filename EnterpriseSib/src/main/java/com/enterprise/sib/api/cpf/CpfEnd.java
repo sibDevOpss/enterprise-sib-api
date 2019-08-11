@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api()
+@Api
 @Service
 @RestController
 @RequestMapping(Constant.URL_MAIN_PATH)
