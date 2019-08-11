@@ -1,9 +1,9 @@
-package com.enterprise.sib.api.models;
+package com.enterprise.sib.api.log;
 
 public class DataHoraMdl {
-	
-	String data;
-	String hora;
+
+	private String data;
+	private String hora;
 	
 	
 	public DataHoraMdl() {

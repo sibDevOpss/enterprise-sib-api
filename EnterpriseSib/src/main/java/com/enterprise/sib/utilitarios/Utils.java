@@ -1,14 +1,13 @@
 package com.enterprise.sib.utilitarios;
 
+import com.enterprise.sib.api.cpf.CpfMassaReqMdl;
+import com.enterprise.sib.api.cpf.CpfReqMdl;
+import com.enterprise.sib.api.log.DadosLogCpfMdl;
+
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import com.enterprise.sib.api.models.DadosLogCpfMdl;
-import com.enterprise.sib.api.models.DataHoraMdl;
-import com.enterprise.sib.api.models.ParamsConsultaCpfMassaMdl;
-import com.enterprise.sib.api.models.ParamsConsultaCpfMdl;
 
 public class Utils {
 
@@ -43,9 +42,9 @@ public class Utils {
 
 		DadosLogCpfMdl dadosLog = new DadosLogCpfMdl();
 
-		String horaDataLocal = dataHoraConsulta.format(formataDataHora); 
+		String horaDataLocal = dataHoraConsulta.format(formataDataHora);
 
-		String campos[] = horaDataLocal.split(" ");
+		String[] campos = horaDataLocal.split(" ");
 
 		dadosLog.getDataHora().setData(campos[0]);
 		dadosLog.getDataHora().setHora(campos[1]);
@@ -53,7 +52,7 @@ public class Utils {
 		return dadosLog;
 	}
 
-	public DadosLogCpfMdl defineDadosLogCpf (DadosLogCpfMdl dadosLog, ParamsConsultaCpfMdl params) {
+	public DadosLogCpfMdl defineDadosLogCpf(DadosLogCpfMdl dadosLog, CpfReqMdl params) {
 
 		dadosLog.getParamsConsulta().setCpf(params.getCpf());
 		dadosLog.getParamsConsulta().setNomeOperadora(params.getNomeOperadora());
@@ -63,8 +62,8 @@ public class Utils {
 		return dadosLog;
 
 	}
-	
-	public DadosLogCpfMdl defineDadosLogCpfMassa (DadosLogCpfMdl dadosLog, ParamsConsultaCpfMassaMdl params, String cpfsConcatenados) {
+
+	public DadosLogCpfMdl defineDadosLogCpfMassa(DadosLogCpfMdl dadosLog, CpfMassaReqMdl params, String cpfsConcatenados) {
 
 		dadosLog.getParamsConsulta().setNomeOperadora(params.getNomeOperadora());
 		dadosLog.getParamsConsulta().setCodigoOperadora(params.getCodigoOperadora());

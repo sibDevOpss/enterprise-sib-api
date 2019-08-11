@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan("com.enterprise.sib.*")
-@EntityScan("com.enterprise.sib.api.models")
+@EntityScan("com.enterprise.sib.api.*")
 @EnableJpaRepositories
 public class EnterpriseSibApplication {
 

@@ -1,4 +1,8 @@
-package com.enterprise.sib.api.controllers;
+package com.enterprise.sib.api.cpf;
+
+import com.enterprise.sib.api.log.DadosLogCpfMdl;
+import com.enterprise.sib.utilitarios.Utils;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -7,19 +11,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.enterprise.sib.api.DAO.CpfDAO;
-import com.enterprise.sib.api.models.CpfRespMdl;
-import com.enterprise.sib.api.models.DadosLogCpfMdl;
-import com.enterprise.sib.api.models.ParamsConsultaCpfMassaMdl;
-import com.enterprise.sib.api.models.ParamsConsultaCpfMdl;
-import com.enterprise.sib.utilitarios.Utils;
-import com.google.gson.Gson;
 
 //@Service
 public class CpfCtrl {
@@ -30,7 +21,7 @@ public class CpfCtrl {
 	
 	
 	// Metodo para gravar o log do endpoint "consultar_cpf" , serve para gravar 1 cpf no log
-	public void gravaLog (ParamsConsultaCpfMdl params) {	
+	public void gravaLog(CpfReqMdl params) {
 		
 		Utils utilitarios = new Utils();
 
@@ -63,7 +54,7 @@ public class CpfCtrl {
 	}
 	
 	// Metodo para gravar o log do endpoint "consultar_cpf_massa" , serve para gravar VÁRIOS cpfs no log
-	public void gravaLogCpfEmMassa (ParamsConsultaCpfMassaMdl params) {
+	public void gravaLogCpfEmMassa(CpfMassaReqMdl params) {
 
 		Utils utilitarios = new Utils();
 
@@ -94,7 +85,7 @@ public class CpfCtrl {
 	public List<CpfRespMdl> obtemConsultaVariosCpfs (List<String> listaCpfConsultaParams) {
 		
 		CpfRespMdl[] listaCpfMock = obtemListaCpfMock();
-		ArrayList<CpfRespMdl> listaAchados = new ArrayList<CpfRespMdl>();
+		ArrayList<CpfRespMdl> listaAchados = new ArrayList<>();
 		
 		for (String cpfConsulta : listaCpfConsultaParams) {
 			
@@ -108,9 +99,9 @@ public class CpfCtrl {
 		
 		return listaAchados;
 	}
-	
 
-	public CpfRespMdl[] obtemListaCpfMock () {
+
+	private CpfRespMdl[] obtemListaCpfMock() {
 
 		BufferedReader reader;
 		CpfRespMdl[] listaCpfMock = {};
@@ -142,8 +133,8 @@ public class CpfCtrl {
 
 		return pessoa;
 	}
-	
-	public String concatenaListaCpfEmString (List<String> listaCpfs) {
+
+	private String concatenaListaCpfEmString(List<String> listaCpfs) {
 		
 		String separador=",";
 		StringBuilder cpfsConcatenados = new StringBuilder();

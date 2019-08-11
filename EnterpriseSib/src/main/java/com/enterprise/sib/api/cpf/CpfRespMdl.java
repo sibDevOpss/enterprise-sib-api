@@ -1,4 +1,4 @@
-package com.enterprise.sib.api.models;
+package com.enterprise.sib.api.cpf;
 
 public class CpfRespMdl {
 

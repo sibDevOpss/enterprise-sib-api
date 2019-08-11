@@ -1,4 +1,4 @@
-package com.EnterpriseSib;
+package com.enterpriseSib;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

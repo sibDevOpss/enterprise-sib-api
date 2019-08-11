@@ -1,15 +1,15 @@
-package com.enterprise.sib.api.models;
+package com.enterprise.sib.api.cpf;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParamsConsultaCpfMassaMdl {
-	
-	String nomeOperadora;
-	int codigoOperadora;
-	String dataNascimento;
-	String nomeUsuario;
-	List<String> listaCpfs = new ArrayList<String>();
+public class CpfMassaReqMdl {
+
+	private String nomeOperadora;
+	private int codigoOperadora;
+	private String dataNascimento;
+	private String nomeUsuario;
+	private List<String> listaCpfs = new ArrayList<>();
 	
 	
 	public String getNomeOperadora() {

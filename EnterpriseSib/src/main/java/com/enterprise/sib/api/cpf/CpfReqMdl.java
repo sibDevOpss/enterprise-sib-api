@@ -1,16 +1,16 @@
-package com.enterprise.sib.api.models;
+package com.enterprise.sib.api.cpf;
 
-public class ParamsConsultaCpfMdl {
-	
+public class CpfReqMdl {
 
-	String cpf;
-	String nomeOperadora;
-	int codigoOperadora;
-	String dataNascimento;
-	String nomeUsuario;
-	
-	
-	public ParamsConsultaCpfMdl() {
+
+	private String cpf;
+	private String nomeOperadora;
+	private int codigoOperadora;
+	private String dataNascimento;
+	private String nomeUsuario;
+
+
+	public CpfReqMdl() {
 		
 	}
 	

@@ -1,10 +1,8 @@
-package com.enterprise.sib.api.DAO;
+package com.enterprise.sib.api.cpf;
 
+import com.enterprise.sib.api.log.DadosLogCpfJPAMdl;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-
-import com.enterprise.sib.api.models.DadosLogCpfJPAMdl;
-import com.enterprise.sib.api.models.DadosLogCpfMdl;
 
 
 @Repository
