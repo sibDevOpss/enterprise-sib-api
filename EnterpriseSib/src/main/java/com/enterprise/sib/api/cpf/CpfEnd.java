@@ -1,7 +1,9 @@
 package com.enterprise.sib.api.cpf;
 
-import java.util.List;
-
+import com.enterprise.sib.api.log.LogCtrl;
+import com.enterprise.sib.utilitarios.Constant;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,11 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.enterprise.sib.api.log.LogCtrl;
-import com.enterprise.sib.utilitarios.Constant;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.util.List;
 
 @Api
 @Service
@@ -40,7 +38,7 @@ public class CpfEnd {
 		
 		//Deixar a chamada de um metodo aqui para consulta unica de 1 CPF, o metodo ficará na cpfCtrl 
 
-        return new ResponseEntity<CpfRespMdl>(cpfController.criarCpfTeste(),HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(cpfController.criarCpfTeste(), HttpStatus.ACCEPTED);
     }
 
 	@ApiOperation(value = "Consulta de cpf em massa", tags = Constant.DEFAULT_TAG)
@@ -51,7 +49,7 @@ public class CpfEnd {
     	
 		List<CpfRespMdl> listaCpfsEncontrados = cpfController.obtemConsultaVariosCpfs(params.getListaCpfs());
 
-		return new ResponseEntity<List<CpfRespMdl>>(listaCpfsEncontrados, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(listaCpfsEncontrados, HttpStatus.ACCEPTED);
 		
     }
 	

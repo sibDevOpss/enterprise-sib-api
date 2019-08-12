@@ -1,15 +1,13 @@
 package com.enterprise.sib.api.cpf;
 
+import com.google.gson.Gson;
+import org.springframework.stereotype.Service;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.google.gson.Gson;
 
 @Service
 public class CpfCtrl {
@@ -21,7 +19,7 @@ public class CpfCtrl {
 	public List<CpfRespMdl> obtemConsultaVariosCpfs (List<String> listaCpfConsultaParams) {
 
 		CpfRespMdl[] listaCpfMock = obtemListaCpfMock();
-		ArrayList<CpfRespMdl> listaAchados = new ArrayList<CpfRespMdl>();
+        ArrayList<CpfRespMdl> listaAchados = new ArrayList<>();
 
 		for (String cpfConsulta : listaCpfConsultaParams) {
 

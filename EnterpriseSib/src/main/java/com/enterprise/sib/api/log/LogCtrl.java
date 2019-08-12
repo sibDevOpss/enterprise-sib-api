@@ -1,15 +1,15 @@
 package com.enterprise.sib.api.log;
 
+import com.enterprise.sib.api.cpf.CpfMassaReqMdl;
+import com.enterprise.sib.api.cpf.CpfReqMdl;
+import com.enterprise.sib.utilitarios.Utils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.enterprise.sib.api.cpf.CpfMassaReqMdl;
-import com.enterprise.sib.api.cpf.CpfReqMdl;
-import com.enterprise.sib.utilitarios.Utils;
 
 @Service
 public class LogCtrl {
@@ -104,7 +104,7 @@ public class LogCtrl {
 
 	public List<DadosLogCpfJPAMdl> obtemTodosLogBase () {
 
-		List<DadosLogCpfJPAMdl> listaLogsBase = new ArrayList<DadosLogCpfJPAMdl>();
+		List<DadosLogCpfJPAMdl> listaLogsBase = new ArrayList<>();
 
 		for (DadosLogCpfJPAMdl log : logfDAO.findAll()) {
 			listaLogsBase.add(log);
@@ -115,7 +115,7 @@ public class LogCtrl {
 
 	public List<DadosLogCpfJPAMdl> obtemLogsDeUmaOperadora (String nomeOperadora) {
 
-		List<DadosLogCpfJPAMdl> listaLogsEncontrados = new ArrayList<DadosLogCpfJPAMdl>();
+		List<DadosLogCpfJPAMdl> listaLogsEncontrados = new ArrayList<>();
 
 		for (DadosLogCpfJPAMdl log : logfDAO.findLogsByNomeOperadora(nomeOperadora)) {
 			listaLogsEncontrados.add(log);
@@ -126,7 +126,7 @@ public class LogCtrl {
 
 	public List<DadosLogCpfJPAMdl> obtemLogsPorNomeUsuario (String nomeUsuario) {
 
-		List<DadosLogCpfJPAMdl> listaLogsEncontrados = new ArrayList<DadosLogCpfJPAMdl>();
+		List<DadosLogCpfJPAMdl> listaLogsEncontrados = new ArrayList<>();
 
 		for (DadosLogCpfJPAMdl log : logfDAO.findLogsByNomeUsuario(nomeUsuario)) {
 			listaLogsEncontrados.add(log);
@@ -137,7 +137,7 @@ public class LogCtrl {
 	
 	public List<DadosLogCpfJPAMdl> obtemLogsPorCodigoOperadora (int codigoOperadora) {
 
-		List<DadosLogCpfJPAMdl> listaLogsEncontrados = new ArrayList<DadosLogCpfJPAMdl>();
+		List<DadosLogCpfJPAMdl> listaLogsEncontrados = new ArrayList<>();
 
 		for (DadosLogCpfJPAMdl log : logfDAO.findLogsByCodigoOperadora(codigoOperadora)) {
 			listaLogsEncontrados.add(log);

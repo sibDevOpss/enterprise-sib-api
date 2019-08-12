@@ -1,7 +1,6 @@
 package com.enterprise.sib.api.log;
 
 import javax.persistence.*;
-import java.util.Date;
 
 
 @Entity

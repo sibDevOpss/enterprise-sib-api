@@ -1,50 +1,53 @@
 package com.enterprise.sib.api.login;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class LoginRespMdl {
 
-    private String userId;
-    private String sessionId;
-    private String userName;
-    private String displayName;
-    private ResponseStatus responseStatus;
+    private String UserId;
+    private String SessionId;
+    private String UserName;
+    private String DisplayName;
+    private ResponseStatus ResponseStatus;
 
     public String getUserId() {
-        return userId;
+        return UserId;
     }
 
     public void setUserId(String userId) {
-        this.userId = userId;
+        UserId = userId;
     }
 
     public String getSessionId() {
-        return sessionId;
+        return SessionId;
     }
 
     public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+        SessionId = sessionId;
     }
 
     public String getUserName() {
-        return userName;
+        return UserName;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        UserName = userName;
     }
 
     public String getDisplayName() {
-        return displayName;
+        return DisplayName;
     }
 
     public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+        DisplayName = displayName;
     }
 
-    public ResponseStatus getResponseStatus() {
-        return responseStatus;
+    public com.enterprise.sib.api.login.ResponseStatus getResponseStatus() {
+        return ResponseStatus;
     }
 
-    public void setResponseStatus(ResponseStatus responseStatus) {
-        this.responseStatus = responseStatus;
+    public void setResponseStatus(com.enterprise.sib.api.login.ResponseStatus responseStatus) {
+        ResponseStatus = responseStatus;
     }
 }
