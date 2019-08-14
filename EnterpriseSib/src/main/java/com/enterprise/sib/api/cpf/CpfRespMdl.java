@@ -2,85 +2,86 @@ package com.enterprise.sib.api.cpf;
 
 public class CpfRespMdl {
 
-    private String cpf;
-    private String nome;
-    private String situacao;
-    private String digito;
-    private String dataNascimento;
-    private String anoObito;
-    private String dataInscricao;
-    private String dataHora;
-    private String comprovante;
+    private String CPF;
+    private String Nome;
+    private String Situacao;
+    private String Digito;
+    private String DataNascimento;
+    private String AnoObito;
+    private String DataInscricao;
+    private String DataHora;
+    private String Comprovante;
 
-    public String getCpf() {
-        return cpf;
+    public String getCPF() {
+        return CPF;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setCPF(String CPF) {
+        this.CPF = CPF;
     }
 
     public String getNome() {
-        return nome;
+        return Nome;
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        Nome = nome;
     }
 
     public String getSituacao() {
-        return situacao;
+        return Situacao;
     }
 
     public void setSituacao(String situacao) {
-        this.situacao = situacao;
+        Situacao = situacao;
     }
 
     public String getDigito() {
-        return digito;
+        return Digito;
     }
 
     public void setDigito(String digito) {
-        this.digito = digito;
+        Digito = digito;
     }
 
     public String getDataNascimento() {
-        return dataNascimento;
+        return DataNascimento;
     }
 
     public void setDataNascimento(String dataNascimento) {
-        this.dataNascimento = dataNascimento;
+        DataNascimento = dataNascimento;
     }
 
     public String getAnoObito() {
-        return anoObito;
+        return AnoObito;
     }
 
     public void setAnoObito(String anoObito) {
-        this.anoObito = anoObito;
+        AnoObito = anoObito;
     }
 
     public String getDataInscricao() {
-        return dataInscricao;
+        return DataInscricao;
     }
 
     public void setDataInscricao(String dataInscricao) {
-        this.dataInscricao = dataInscricao;
+        DataInscricao = dataInscricao;
     }
 
     public String getDataHora() {
-        return dataHora;
+        return DataHora;
     }
 
     public void setDataHora(String dataHora) {
-        this.dataHora = dataHora;
+        DataHora = dataHora;
     }
 
     public String getComprovante() {
-        return comprovante;
+        return Comprovante;
     }
 
     public void setComprovante(String comprovante) {
-        this.comprovante = comprovante;
+        Comprovante = comprovante;
     }
+
 }

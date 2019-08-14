@@ -50,4 +50,5 @@ public class LoginRespMdl {
     public void setResponseStatus(com.enterprise.sib.api.login.ResponseStatus responseStatus) {
         ResponseStatus = responseStatus;
     }
+
 }
