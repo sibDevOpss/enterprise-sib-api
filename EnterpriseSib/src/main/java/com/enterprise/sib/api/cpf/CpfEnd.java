@@ -1,6 +1,9 @@
 package com.enterprise.sib.api.cpf;
 
 import com.enterprise.sib.api.log.LogCtrl;
+import com.enterprise.sib.api.login.LoginCtrl;
+import com.enterprise.sib.api.login.LoginReqMdl;
+import com.enterprise.sib.api.login.LoginRespMdl;
 import com.enterprise.sib.utilitarios.Constant;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,37 +25,40 @@ import java.util.List;
 @RequestMapping(Constant.URL_MAIN_PATH)
 public class CpfEnd {
 
-	
-	@Autowired
-	private CpfCtrl cpfController;
-	
-	@Autowired
-	private LogCtrl logController;
+    @Autowired
+    private LoginCtrl loginController;
 
+    @Autowired
+    private LogCtrl logController;
 
-	@ApiOperation(value = "Consulta de cpf", tags = Constant.DEFAULT_TAG)
-	@PostMapping(path = "/consultar_cpf", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<CpfRespMdl> obtemCpf(@RequestBody CpfReqMdl params) {
-        
-		logController.gravaLog(params);
-		
-		//Deixar a chamada de um metodo aqui para consulta unica de 1 CPF, o metodo ficará na cpfCtrl 
+    @Autowired
+    private CpfCtrl cpfController;
 
-		return new ResponseEntity<>(cpfController.criarCpfTeste(), HttpStatus.ACCEPTED);
+    @ApiOperation(value = "Consulta de cpf", tags = Constant.DEFAULT_TAG)
+    @PostMapping(path = "/consultar_cpf", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CpfRespMdl> obtemCpf(@RequestBody CpfReqMdl params) {
+
+//    	Login fixo temporário
+        LoginReqMdl loginRequest = new LoginReqMdl();
+        loginRequest.setUsuario("ENTERPRISE");
+        loginRequest.setSenha("ENTERPRISE2019@)!(");
+
+        LoginRespMdl loginResposta = loginController.efetuarLogin(loginRequest);
+        logController.gravaLog(params);
+
+        return new ResponseEntity<>(cpfController.consultarCpf(params), HttpStatus.OK);
+
     }
 
-	@ApiOperation(value = "Consulta de cpf em massa", tags = Constant.DEFAULT_TAG)
-	@PostMapping(path = "/consultar_cpf_em_massa", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<CpfRespMdl>> obtemCpfEmLotes(@RequestBody CpfMassaReqMdl params) {
+    @ApiOperation(value = "Consulta de cpf em massa", tags = Constant.DEFAULT_TAG)
+    @PostMapping(path = "/consultar_cpf_em_massa", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CpfRespMdl>> obtemCpfEmLotes(@RequestBody CpfMassaReqMdl params) {
 
-		logController.gravaLogCpfEmMassa(params);
-    	
-		List<CpfRespMdl> listaCpfsEncontrados = cpfController.obtemConsultaVariosCpfs(params.getListaCpfs());
+        logController.gravaLogCpfEmMassa(params);
 
-		return new ResponseEntity<>(listaCpfsEncontrados, HttpStatus.ACCEPTED);
-		
+        List<CpfRespMdl> listaCpfsEncontrados = cpfController.obtemConsultaVariosCpfs(params.getListaCpfs());
+
+        return new ResponseEntity<>(listaCpfsEncontrados, HttpStatus.ACCEPTED);
+
     }
-	
-	
-	
 }
