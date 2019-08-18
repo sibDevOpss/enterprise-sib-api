@@ -4,7 +4,7 @@ import com.enterprise.sib.api.cpf.CpfReqMdl;
 
 public class DadosLogCpfMdl {
 
-
+    private String jsonEntradaEndpoint;
 	private CpfReqMdl paramsConsulta = new CpfReqMdl();
 	private DataHoraMdl dataHora = new DataHoraMdl();
 	
@@ -13,10 +13,15 @@ public class DadosLogCpfMdl {
 	}
 
 
+	public String getJsonEntradaEndpoint() {
+		return jsonEntradaEndpoint;
+	}
+	public void setJsonEntradaEndpoint(String jsonEntradaEndpoint) {
+		this.jsonEntradaEndpoint = jsonEntradaEndpoint;
+	}
 	public CpfReqMdl getParamsConsulta() {
 		return paramsConsulta;
 	}
-
 	public void setParamsConsulta(CpfReqMdl paramsConsulta) {
 		this.paramsConsulta = paramsConsulta;
 	}

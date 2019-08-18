@@ -3,6 +3,8 @@ package com.enterprise.sib.api.log;
 import com.enterprise.sib.api.cpf.CpfMassaReqMdl;
 import com.enterprise.sib.api.cpf.CpfReqMdl;
 import com.enterprise.sib.utilitarios.Utils;
+import com.google.gson.Gson;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,134 +23,151 @@ public class LogCtrl {
 
 
 	// Metodo para gravar o log do endpoint "consultar_cpf" , serve para gravar 1 cpf no log
-	public void gravaLog(CpfReqMdl params) {
+	public void gravaLog(CpfReqMdl params, String retorno, boolean indicadorSucessoBusca) {
 
 		Utils utilitarios = new Utils();
 
 		String mascaraDataHora = "dd-MM-yyyy HH:mm:ss";
-
-		String pathSaidaDadosLog = "C:\\Users\\Godzilla\\Desktop\\saidas\\";
-
-		String extensaoArqLog = ".txt";
 
 		LocalDateTime dataHoraConsulta = utilitarios.obtemDataHoraAtual();
 
 		DateTimeFormatter formataDataHora = utilitarios.obtemTipoDataHoraFormatado(mascaraDataHora);
 
 		DadosLogCpfMdl dadosLog = utilitarios.defineDataHoraLocal(dataHoraConsulta, formataDataHora);
-
+		
 		dadosLog = utilitarios.defineDadosLogCpf(dadosLog, params);
+		
+		DadosLogJPAMdl dados = carregaObjetoLogParaSalvar(dadosLog, retorno, indicadorSucessoBusca);
 
-		String infoLog = utilitarios.criaDadosLog(dadosLog);
-
-		String nomeArqLog = utilitarios.obtemNomeArqSaidaLog(dadosLog, extensaoArqLog);
-
-		//utilitarios.gravarArquivoLog(pathSaidaDadosLog, nomeArqLog, infoLog);
-
-		salvarLogNoBanco (dadosLog);
+		logfDAO.save(dados);
 
 
 	}
 
 	// Metodo para gravar o log do endpoint "consultar_cpf_massa" , serve para gravar VÁRIOS cpfs no log
-	public void gravaLogCpfEmMassa(CpfMassaReqMdl params) {
+	//	public void gravaLogCpfEmMassa(CpfMassaReqMdl params) {
+	//
+	//		Utils utilitarios = new Utils();
+	//
+	//		String mascaraDataHora = "dd-MM-yyyy HH:mm:ss";
+	//
+	//		String pathSaidaDadosLog = "C:\\Users\\Godzilla\\Desktop\\saidas\\";
+	//
+	//		String extensaoArqLog = ".txt";
+	//
+	//		String cpfsConcatenados = utilitarios.concatenaListaCpfEmString(params.getListaCpfs());
+	//
+	//		LocalDateTime dataHoraConsulta = utilitarios.obtemDataHoraAtual();
+	//
+	//		DateTimeFormatter formataDataHora = utilitarios.obtemTipoDataHoraFormatado(mascaraDataHora);
+	//
+	//		DadosLogCpfMdl dadosLog = utilitarios.defineDataHoraLocal(dataHoraConsulta, formataDataHora);
+	//
+	//		dadosLog = utilitarios.defineDadosLogCpfMassa(dadosLog, params,cpfsConcatenados);
+	//
+	//		String infoLog = utilitarios.criaDadosLog(dadosLog);
+	//
+	//		String nomeArqLog = utilitarios.obtemNomeArqSaidaLog(dadosLog, extensaoArqLog);
+	//
+	//		//utilitarios.gravarArquivoLog(pathSaidaDadosLog, nomeArqLog, infoLog);
+	//
+	//		salvarLogNoBanco (dadosLog);
+	//
+	//	}
 
-		Utils utilitarios = new Utils();
+	public DadosLogJPAMdl carregaObjetoLogParaSalvar (DadosLogCpfMdl dadosLog, String retorno, boolean indicadorSucessoBusca) {
 
-		String mascaraDataHora = "dd-MM-yyyy HH:mm:ss";
+		DadosLogJPAMdl dadosJPA = new DadosLogJPAMdl();
 
-		String pathSaidaDadosLog = "C:\\Users\\Godzilla\\Desktop\\saidas\\";
-
-		String extensaoArqLog = ".txt";
-
-		String cpfsConcatenados = utilitarios.concatenaListaCpfEmString(params.getListaCpfs());
-
-		LocalDateTime dataHoraConsulta = utilitarios.obtemDataHoraAtual();
-
-		DateTimeFormatter formataDataHora = utilitarios.obtemTipoDataHoraFormatado(mascaraDataHora);
-
-		DadosLogCpfMdl dadosLog = utilitarios.defineDataHoraLocal(dataHoraConsulta, formataDataHora);
-
-		dadosLog = utilitarios.defineDadosLogCpfMassa(dadosLog, params,cpfsConcatenados);
-
-		String infoLog = utilitarios.criaDadosLog(dadosLog);
-
-		String nomeArqLog = utilitarios.obtemNomeArqSaidaLog(dadosLog, extensaoArqLog);
-
-		//utilitarios.gravarArquivoLog(pathSaidaDadosLog, nomeArqLog, infoLog);
-
-		salvarLogNoBanco (dadosLog);
-
-	}
-
-	public void salvarLogNoBanco (DadosLogCpfMdl dadosLog) {
-
-		DadosLogCpfJPAMdl log = carregaObjetoLogParaSalvar(dadosLog);
-		logfDAO.save(log);
-
-	}
-
-	public DadosLogCpfJPAMdl carregaObjetoLogParaSalvar (DadosLogCpfMdl dadosLog) {
-
-		DadosLogCpfJPAMdl dadosJPA = new DadosLogCpfJPAMdl();
-
-		dadosJPA.setCodigoOperadora(dadosLog.getParamsConsulta().getCodigoOperadora());
-		dadosJPA.setNomeOperadora(dadosLog.getParamsConsulta().getNomeOperadora());
-		dadosJPA.setNomeUsuario(dadosLog.getParamsConsulta().getNomeUsuario());
+		dadosJPA.setUsuarioId(dadosLog.getParamsConsulta().getUsuarioId());
+		dadosJPA.setUsuarioNome(dadosLog.getParamsConsulta().getUsuarioNome());
+		dadosJPA.setOperadoraId(dadosLog.getParamsConsulta().getOperadoraId());
+		dadosJPA.setOperadoraNome(dadosLog.getParamsConsulta().getOperadoraNome());
+		dadosJPA.setOperadoraCnpj(dadosLog.getParamsConsulta().getOperadoraCnpj());
+		dadosJPA.setBody(dadosLog.getJsonEntradaEndpoint());
+		dadosJPA.setRetorno(retorno);
+		dadosJPA.setSucesso(indicadorSucessoBusca); 
 		dadosJPA.setCpf(dadosLog.getParamsConsulta().getCpf());
+		dadosJPA.setDataNascimento(dadosLog.getParamsConsulta().getDataNascimento());
 		dadosJPA.setData(dadosLog.getDataHora().getData());
 		dadosJPA.setHora(dadosLog.getDataHora().getHora());
+		//dadosJPA.setIp("IP");
+		//dadosJPA.setHost("HOST");
 
 		return dadosJPA;
 	}
 
-	public List<DadosLogCpfJPAMdl> obtemTodosLogBase () {
+	public List<DadosLogJPAMdl> obtemTodosLogBase () {
 
-		List<DadosLogCpfJPAMdl> listaLogsBase = new ArrayList<>();
+		List<DadosLogJPAMdl> listaLogsBase = new ArrayList<>();
 
-		for (DadosLogCpfJPAMdl log : logfDAO.findAll()) {
+		for (DadosLogJPAMdl log : logfDAO.findAll()) {
 			listaLogsBase.add(log);
 		}
 
 		return listaLogsBase;
 	}
 
-	public List<DadosLogCpfJPAMdl> obtemLogsDeUmaOperadora (String nomeOperadora) {
+	public List<DadosLogJPAMdl> obtemLogsDeUmaOperadora (String nomeOperadora) {
 
-		List<DadosLogCpfJPAMdl> listaLogsEncontrados = new ArrayList<>();
+		List<DadosLogJPAMdl> listaLogsEncontrados = new ArrayList<>();
 
-		for (DadosLogCpfJPAMdl log : logfDAO.findLogsByNomeOperadora(nomeOperadora)) {
+		for (DadosLogJPAMdl log : logfDAO.findLogsByNomeOperadora(nomeOperadora)) {
 			listaLogsEncontrados.add(log);
 		}
 
 		return listaLogsEncontrados;
 	}
 
-	public List<DadosLogCpfJPAMdl> obtemLogsPorNomeUsuario (String nomeUsuario) {
+	public List<DadosLogJPAMdl> obtemLogsPorNomeUsuario (String nomeUsuario) {
 
-		List<DadosLogCpfJPAMdl> listaLogsEncontrados = new ArrayList<>();
+		List<DadosLogJPAMdl> listaLogsEncontrados = new ArrayList<>();
 
-		for (DadosLogCpfJPAMdl log : logfDAO.findLogsByNomeUsuario(nomeUsuario)) {
+		for (DadosLogJPAMdl log : logfDAO.findLogsByNomeUsuario(nomeUsuario)) {
+			listaLogsEncontrados.add(log);
+		}
+
+		return listaLogsEncontrados;
+	}
+
+	public List<DadosLogJPAMdl> obtemLogsPorCodigoOperadora (int codigoOperadora) {
+
+		List<DadosLogJPAMdl> listaLogsEncontrados = new ArrayList<>();
+
+		for (DadosLogJPAMdl log : logfDAO.findLogsByCodigoOperadora(codigoOperadora)) {
 			listaLogsEncontrados.add(log);
 		}
 
 		return listaLogsEncontrados;
 	}
 	
-	public List<DadosLogCpfJPAMdl> obtemLogsPorCodigoOperadora (int codigoOperadora) {
+	
+	public List<DadosLogJPAMdl> obtemLogsPorOperadoraCnpj (String operadoraCNPJ) {
 
-		List<DadosLogCpfJPAMdl> listaLogsEncontrados = new ArrayList<>();
+		List<DadosLogJPAMdl> listaLogsEncontrados = new ArrayList<>();
 
-		for (DadosLogCpfJPAMdl log : logfDAO.findLogsByCodigoOperadora(codigoOperadora)) {
+		for (DadosLogJPAMdl log : logfDAO.findLogsByOperadoraCnpj(operadoraCNPJ)) {
 			listaLogsEncontrados.add(log);
 		}
 
 		return listaLogsEncontrados;
 	}
 	
+	
+	public List<DadosLogJPAMdl> obtemLogsUsuarioId (String usuarioId) {
+
+		List<DadosLogJPAMdl> listaLogsEncontrados = new ArrayList<>();
+
+		for (DadosLogJPAMdl log : logfDAO.findLogsByUsuarioId(usuarioId)) {
+			listaLogsEncontrados.add(log);
+		}
+
+		return listaLogsEncontrados;
+	}
+
 	public int obtemQuantidadeRegistrosLogNoBanco () {
-		
-		List<DadosLogCpfJPAMdl> listaLogsBase = obtemTodosLogBase();
+
+		List<DadosLogJPAMdl> listaLogsBase = obtemTodosLogBase();
 		return listaLogsBase.size();
 	}
 

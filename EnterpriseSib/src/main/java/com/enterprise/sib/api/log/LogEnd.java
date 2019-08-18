@@ -24,18 +24,18 @@ public class LogEnd {
 	
 	@ApiOperation(value = "Obter todos os logs da base", tags = Constant.LOGS_TAG)
 	@GetMapping(path = "/obter_todos", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DadosLogCpfJPAMdl>> obtemListaDadosLogBase () {
+	public ResponseEntity<List<DadosLogJPAMdl>> obtemListaDadosLogBase () {
         
-		List<DadosLogCpfJPAMdl> listaLogsBase = logController.obtemTodosLogBase();
+		List<DadosLogJPAMdl> listaLogsBase = logController.obtemTodosLogBase();
 
 		return new ResponseEntity<>(listaLogsBase, HttpStatus.ACCEPTED);
     }
 	
 	@ApiOperation(value = "Obter Logs de uma operadora", tags = Constant.LOGS_TAG)
 	@PostMapping(path = "/consulta_por_nome_operadora", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DadosLogCpfJPAMdl>> obtemLogsNomeOperadora (@RequestBody String nomeOperadora) {
+	public ResponseEntity<List<DadosLogJPAMdl>> obtemLogsNomeOperadora (@RequestBody String nomeOperadora) {
         
-		List<DadosLogCpfJPAMdl> listaLogsEncontrados = logController.obtemLogsDeUmaOperadora(nomeOperadora);
+		List<DadosLogJPAMdl> listaLogsEncontrados = logController.obtemLogsDeUmaOperadora(nomeOperadora);
 
 		return new ResponseEntity<>(listaLogsEncontrados, HttpStatus.ACCEPTED);
     }
@@ -43,9 +43,9 @@ public class LogEnd {
 	
 	@ApiOperation(value = "Obter Logs de um usuario", tags = Constant.LOGS_TAG)
 	@PostMapping(path = "/consulta_por_nome_usuario", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DadosLogCpfJPAMdl>> obtemLogsNomeUsuario (@RequestBody String nomeUsuario) {
+	public ResponseEntity<List<DadosLogJPAMdl>> obtemLogsNomeUsuario (@RequestBody String nomeUsuario) {
         
-		List<DadosLogCpfJPAMdl> listaLogsEncontrados = logController.obtemLogsPorNomeUsuario(nomeUsuario);
+		List<DadosLogJPAMdl> listaLogsEncontrados = logController.obtemLogsPorNomeUsuario(nomeUsuario);
 
 		return new ResponseEntity<>(listaLogsEncontrados, HttpStatus.ACCEPTED);
     }
@@ -53,10 +53,30 @@ public class LogEnd {
 	
 	@ApiOperation(value = "Obter Logs de uma operadora por seu código", tags = Constant.LOGS_TAG)
 	@PostMapping(path = "/consulta_por_codigo_operadora", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DadosLogCpfJPAMdl>> obtemLogsCodigoOperadora (@RequestBody int codigoOperadora) {
+	public ResponseEntity<List<DadosLogJPAMdl>> obtemLogsCodigoOperadora (@RequestBody int codigoOperadora) {
         
-		List<DadosLogCpfJPAMdl> listaLogsEncontrados = logController.obtemLogsPorCodigoOperadora(codigoOperadora);
+		List<DadosLogJPAMdl> listaLogsEncontrados = logController.obtemLogsPorCodigoOperadora(codigoOperadora);
 
+		return new ResponseEntity<>(listaLogsEncontrados, HttpStatus.ACCEPTED);
+    }
+	
+
+	@ApiOperation(value = "Obter Logs de uma operadora por seu CNPJ", tags = Constant.LOGS_TAG)
+	@PostMapping(path = "/consulta_por_operadora_cnpj", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<DadosLogJPAMdl>> obtemLogsOperadoraCnpj (String operadoraCNPJ) {
+		
+		List<DadosLogJPAMdl> listaLogsEncontrados = logController.obtemLogsPorOperadoraCnpj(operadoraCNPJ);
+		
+		return new ResponseEntity<>(listaLogsEncontrados, HttpStatus.ACCEPTED);
+    }
+	
+	
+	@ApiOperation(value = "Obter Logs de um usuario pelo seu ID", tags = Constant.LOGS_TAG)
+	@PostMapping(path = "/consulta_por_usuario_id", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<DadosLogJPAMdl>> obtemLogsUsuarioId (String usuarioId) {
+		
+		List<DadosLogJPAMdl> listaLogsEncontrados = logController.obtemLogsUsuarioId(usuarioId);
+		
 		return new ResponseEntity<>(listaLogsEncontrados, HttpStatus.ACCEPTED);
     }
 	
@@ -67,6 +87,7 @@ public class LogEnd {
 
 		return new ResponseEntity<>("{\"Quantidade\" : \"" + logController.obtemQuantidadeRegistrosLogNoBanco() + "\"}", HttpStatus.ACCEPTED);
     }
+	
 	
 
 }

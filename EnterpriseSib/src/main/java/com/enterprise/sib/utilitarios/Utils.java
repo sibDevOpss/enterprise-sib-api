@@ -3,6 +3,7 @@ package com.enterprise.sib.utilitarios;
 import com.enterprise.sib.api.cpf.CpfMassaReqMdl;
 import com.enterprise.sib.api.cpf.CpfReqMdl;
 import com.enterprise.sib.api.log.DadosLogCpfMdl;
+import com.google.gson.Gson;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -56,24 +57,39 @@ public class Utils {
 	public DadosLogCpfMdl defineDadosLogCpf(DadosLogCpfMdl dadosLog, CpfReqMdl params) {
 
 		dadosLog.getParamsConsulta().setCpf(params.getCpf());
-		dadosLog.getParamsConsulta().setNomeOperadora(params.getNomeOperadora().toUpperCase());
-		dadosLog.getParamsConsulta().setNomeUsuario(params.getNomeUsuario());
-		dadosLog.getParamsConsulta().setCodigoOperadora(params.getCodigoOperadora());
-
+		dadosLog.getParamsConsulta().setUsuarioNome(params.getUsuarioNome());
+		dadosLog.getParamsConsulta().setUsuarioId(params.getUsuarioId());
+		dadosLog.getParamsConsulta().setOperadoraId(params.getOperadoraId());
+		dadosLog.getParamsConsulta().setOperadoraNome(params.getOperadoraNome());
+		dadosLog.getParamsConsulta().setOperadoraCnpj(params.getOperadoraCnpj());
+		dadosLog.getParamsConsulta().setDataNascimento(params.getDataNascimento());
+		dadosLog.setJsonEntradaEndpoint(defineJsonCamposEntradaNossaApiCPF(params));
+		
+		
 		return dadosLog;
 
 	}
+	
+	public String defineJsonCamposEntradaNossaApiCPF (CpfReqMdl params) {
 
-	public DadosLogCpfMdl defineDadosLogCpfMassa(DadosLogCpfMdl dadosLog, CpfMassaReqMdl params, String cpfsConcatenados) {
+		Gson g = new Gson();
 
-		dadosLog.getParamsConsulta().setNomeOperadora(params.getNomeOperadora());
-		dadosLog.getParamsConsulta().setCodigoOperadora(params.getCodigoOperadora());
-		dadosLog.getParamsConsulta().setNomeUsuario(params.getNomeUsuario());
-		dadosLog.getParamsConsulta().setCpf(cpfsConcatenados);
-
-		return dadosLog;
+		String jsonEntrada = g.toJson(params);
+		
+		return jsonEntrada;
 
 	}
+
+//	public DadosLogCpfMdl defineDadosLogCpfMassa(DadosLogCpfMdl dadosLog, CpfMassaReqMdl params, String cpfsConcatenados) {
+//
+//		dadosLog.getParamsConsulta().setUsuarioNome(params.getUsuarioNome());
+//		dadosLog.getParamsConsulta().setCodigoOperadora(params.getCodigoOperadora());
+//		dadosLog.getParamsConsulta().setNomeUsuario(params.getNomeUsuario());
+//		dadosLog.getParamsConsulta().setCpf(cpfsConcatenados);
+//
+//		return dadosLog;
+//
+//	}
 	
 	public String concatenaListaCpfEmString(List<String> listaCpfs) {
 
@@ -94,15 +110,15 @@ public class Utils {
 
 	}
 
-	public String obtemNomeArqSaidaLog (DadosLogCpfMdl dadosLog, String extensaoArqLog) {
-		return dadosLog.getParamsConsulta().getNomeOperadora() + extensaoArqLog;
+//	public String obtemNomeArqSaidaLog (DadosLogCpfMdl dadosLog, String extensaoArqLog) {
+//		return dadosLog.getParamsConsulta().getNomeOperadora() + extensaoArqLog;
+//
+//	}
 
-	}
-
-	public String criaDadosLog (DadosLogCpfMdl dadosLog) {
-
-		return "Usuario : " + dadosLog.getParamsConsulta().getNomeUsuario() + " | Operadora : " + dadosLog.getParamsConsulta().getNomeOperadora() + " | Codigo Operadora : " + dadosLog.getParamsConsulta().getCodigoOperadora() + " | CPFs Buscados : " + dadosLog.getParamsConsulta().getCpf() + " | Data : " + dadosLog.getDataHora().getData() + " | Horario : " + dadosLog.getDataHora().getHora();
-
-	}
+//	public String criaDadosLog (DadosLogCpfMdl dadosLog) {
+//
+//		return "Usuario : " + dadosLog.getParamsConsulta().getNomeUsuario() + " | Operadora : " + dadosLog.getParamsConsulta().getNomeOperadora() + " | Codigo Operadora : " + dadosLog.getParamsConsulta().getCodigoOperadora() + " | CPFs Buscados : " + dadosLog.getParamsConsulta().getCpf() + " | Data : " + dadosLog.getDataHora().getData() + " | Horario : " + dadosLog.getDataHora().getHora();
+//
+//	}
 
 }

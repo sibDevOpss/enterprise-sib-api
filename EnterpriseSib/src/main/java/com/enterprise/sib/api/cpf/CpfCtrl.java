@@ -4,6 +4,7 @@ import com.enterprise.sib.utilitarios.Connection;
 import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -14,12 +15,44 @@ import java.util.List;
 
 @Service
 public class CpfCtrl {
-
+	
+	
+	@Autowired
+	private CpfDAO cpfDAO;
+	
+	
     private CpfRespMdl getResponse(String url) {
 
         Connection<CpfRespMdl> connection = new Connection<>();
         String response = connection.getResponse(url);
         return connection.setResponse(obterJsonApi(response), CpfRespMdl.class);
+    }
+    
+    public CpfDadosJPAMdl converteJsonStringParaClasseCpfDados (String resultadoBuscaBanco) {
+    	
+    	Gson g = new Gson();
+		
+		CpfDadosJPAMdl cpfDados = g.fromJson(resultadoBuscaBanco, CpfDadosJPAMdl.class);
+		
+		return cpfDados;
+    }
+    
+    
+    public String consultaCpfBaseAntes (String cpf) {
+    	
+    	CpfDadosJPAMdl dadosCpf = cpfDAO.findCpf(cpf);
+    	
+    	if (dadosCpf == null) {
+			return "false";
+			
+		} else {	
+			
+			Gson g = new Gson();
+			String busca = g.toJson(dadosCpf);
+			return busca;
+			
+		}
+    	
     }
 
     public CpfRespMdl consultarCpf(CpfReqMdl request) {
