@@ -59,6 +59,7 @@ public class CpfCtrl {
 
         String dataNasc = request.getDataNascimento() != null ? "&dt_Nascimento=" + request.getDataNascimento() : "";
 
+
         String url = "https://dataintelligence.newdbase.com.br:443/api/5c45a388?" +
                 "nr_CPF=" + request.getCpf() + dataNasc +
                 "&vl_Timeout=30";
@@ -66,12 +67,15 @@ public class CpfCtrl {
         return getResponse(url);
     }
 
+
     public List<CpfRespMdl> obtemConsultaVariosCpfs(List<String> listaCpfConsultaParams) {
+
 
         CpfRespMdl[] listaCpfMock = obtemListaCpfMock();
         ArrayList<CpfRespMdl> listaAchados = new ArrayList<>();
 
         for (String cpfConsulta : listaCpfConsultaParams) {
+
 
             for (CpfRespMdl cpfMock : listaCpfMock) {                        // Quando for pra valer
                 // Apagar tudo da linha 52 a 57 e
@@ -83,6 +87,10 @@ public class CpfCtrl {
 
         return listaAchados;
     }
+
+
+
+ 
 
 
     private CpfRespMdl[] obtemListaCpfMock() {
@@ -99,6 +107,7 @@ public class CpfCtrl {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
 
         return listaCpfMock;
     }

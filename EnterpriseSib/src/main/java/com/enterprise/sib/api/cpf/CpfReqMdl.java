@@ -84,10 +84,5 @@ public class CpfReqMdl {
 	public void setDataNascimento(String dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-	
-	
 
-    
-    
-	
 }
