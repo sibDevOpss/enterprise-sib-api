@@ -1,6 +1,5 @@
 package com.enterprise.sib.utilitarios;
 
-import com.enterprise.sib.api.cpf.CpfMassaReqMdl;
 import com.enterprise.sib.api.cpf.CpfReqMdl;
 import com.enterprise.sib.api.log.DadosLogCpfMdl;
 import com.google.gson.Gson;
@@ -13,34 +12,34 @@ import java.util.List;
 
 public class Utils {
 
-	public void gravarArquivoLog (String basePath, String nomeArq, String infoLog) {
+	public void gravarArquivoLog(String basePath, String nomeArq, String infoLog) {
 
 		gravar(basePath, "Logs.txt", infoLog);
 		gravar(basePath, nomeArq, infoLog);
 
 	}
 
-	public void gravar (String basePath, String nomeArq, String infoLog) {
-		
+	public void gravar(String basePath, String nomeArq, String infoLog) {
+
 		try {
-			PrintWriter output = new PrintWriter(new FileWriter(basePath+nomeArq,true));
+			PrintWriter output = new PrintWriter(new FileWriter(basePath + nomeArq, true));
 			output.printf("%s\r\n", infoLog);
-			output.close(); 
+			output.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
-	public LocalDateTime obtemDataHoraAtual () {
+	public LocalDateTime obtemDataHoraAtual() {
 		return LocalDateTime.now();
 	}
 
-	public DateTimeFormatter obtemTipoDataHoraFormatado (String mascara) {
+	public DateTimeFormatter obtemTipoDataHoraFormatado(String mascara) {
 		return DateTimeFormatter.ofPattern(mascara);
 	}
 
-	public DadosLogCpfMdl defineDataHoraLocal (LocalDateTime dataHoraConsulta, DateTimeFormatter formataDataHora) {
+	public DadosLogCpfMdl defineDataHoraLocal(LocalDateTime dataHoraConsulta, DateTimeFormatter formataDataHora) {
 
 		DadosLogCpfMdl dadosLog = new DadosLogCpfMdl();
 
@@ -64,20 +63,15 @@ public class Utils {
 		dadosLog.getParamsConsulta().setOperadoraCnpj(params.getOperadoraCnpj());
 		dadosLog.getParamsConsulta().setDataNascimento(params.getDataNascimento());
 		dadosLog.setJsonEntradaEndpoint(defineJsonCamposEntradaNossaApiCPF(params));
-		
-		
+
+
 		return dadosLog;
 
 	}
-	
-	public String defineJsonCamposEntradaNossaApiCPF (CpfReqMdl params) {
 
+	public String defineJsonCamposEntradaNossaApiCPF(CpfReqMdl params) {
 		Gson g = new Gson();
-
-		String jsonEntrada = g.toJson(params);
-		
-		return jsonEntrada;
-
+		return g.toJson(params);
 	}
 
 //	public DadosLogCpfMdl defineDadosLogCpfMassa(DadosLogCpfMdl dadosLog, CpfMassaReqMdl params, String cpfsConcatenados) {
@@ -90,10 +84,10 @@ public class Utils {
 //		return dadosLog;
 //
 //	}
-	
+
 	public String concatenaListaCpfEmString(List<String> listaCpfs) {
 
-		String separador=",";
+		String separador = ",";
 		StringBuilder cpfsConcatenados = new StringBuilder();
 
 		for (int index = 0; index < listaCpfs.size(); index++) {

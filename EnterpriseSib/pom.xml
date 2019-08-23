@@ -7,13 +7,12 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.6.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.enterprise</groupId>
     <artifactId>EnterpriseSib</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>EnterpriseSib</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Enterprise SIB Api</description>
 
     <properties>
         <java.version>12</java.version>
@@ -72,6 +71,7 @@
             <artifactId>gson</artifactId>
         </dependency>
 
+        <!-- Json -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>

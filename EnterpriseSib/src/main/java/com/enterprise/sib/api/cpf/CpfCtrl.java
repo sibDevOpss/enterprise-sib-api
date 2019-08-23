@@ -16,6 +16,7 @@ import java.util.List;
 @Service
 public class CpfCtrl {
 
+    @SuppressWarnings("unused")
     @Autowired
     private CpfDAO cpfDAO;
 

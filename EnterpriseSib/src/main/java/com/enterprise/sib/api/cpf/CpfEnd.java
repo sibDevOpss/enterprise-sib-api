@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 @RestController
 @RequestMapping(
-        path = Constant.URL_MAIN_PATH,
+        path = Constant.URL_MAIN,
         produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = MediaType.APPLICATION_JSON_VALUE)
 public class CpfEnd {
@@ -36,7 +36,7 @@ public class CpfEnd {
     @Autowired
     private CpfCtrl cpfController;
 
-    @ApiOperation(value = "Consulta de cpf", tags = Constant.DEFAULT_TAG)
+    @ApiOperation(value = "Consulta de cpf", tags = Constant.TAG_DEFAULT)
     @PostMapping(path = "/consultar_cpf")
     public ResponseEntity<String> obtemCpf(@RequestBody CpfReqMdl params) {
 
@@ -61,7 +61,7 @@ public class CpfEnd {
         return new ResponseEntity<>(cpfDados.getBody(), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Consulta de cpf em massa", tags = Constant.DEFAULT_TAG)
+    @ApiOperation(value = "Consulta de cpf em massa", tags = Constant.TAG_DEFAULT)
     @PostMapping(path = "/consultar_cpf_em_massa")
     public ResponseEntity<List<CpfRespMdl>> obtemCpfEmLotes(@RequestBody CpfMassaReqMdl params) {
 

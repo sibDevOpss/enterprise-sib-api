@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 @Api
 @Service
 @RestController
-@RequestMapping(Constant.URL_MAIN_PATH)
+@RequestMapping(Constant.URL_MAIN)
 public class LoginEnd {
 
     @Autowired
     private LoginCtrl loginController;
 
-    @ApiOperation(value = "Login", tags = Constant.DEFAULT_TAG)
+    @ApiOperation(value = "Login", tags = Constant.TAG_DEFAULT)
     @GetMapping(path = "/login")
     public ResponseEntity<LoginRespMdl> login() {
         return new ResponseEntity<>(loginController.efetuarLogin(), HttpStatus.OK);

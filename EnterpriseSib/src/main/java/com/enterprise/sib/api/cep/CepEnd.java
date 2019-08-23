@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api
 @RestController
-@RequestMapping(Constant.URL_MAIN_PATH)
+@RequestMapping(Constant.URL_MAIN)
 public class CepEnd {
 
-	@ApiOperation(value = "Consulta de cep", tags = Constant.DEFAULT_TAG)
+	@ApiOperation(value = "Consulta de cep", tags = Constant.TAG_DEFAULT)
 	@GetMapping(path = "/consultar_cep", produces = MediaType.APPLICATION_JSON_VALUE)
 	public String obtemCpf() {
 	
