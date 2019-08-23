@@ -21,11 +21,4 @@ public class LoginReqMdl {
         this.senha = senha;
     }
 
-    @Override
-    public String toString() {
-        return "LoginReqMdl{" +
-                "usuario='" + usuario + '\'' +
-                ", senha='" + senha + '\'' +
-                '}';
-    }
 }

@@ -13,11 +13,15 @@ public class LoginCtrl {
         return connection.setResponse(response, LoginRespMdl.class);
     }
 
-    public LoginRespMdl efetuarLogin(LoginReqMdl request) {
+    LoginRespMdl efetuarLogin() {
+
+        LoginReqMdl loginRequest = new LoginReqMdl();
+        loginRequest.setUsuario("ENTERPRISE");
+        loginRequest.setSenha("ENTERPRISE2019@)!(");
 
         String url = "https://dataintelligence.newdbase.com.br/auth/credentials" +
-                "?username=" + request.getUsuario() +
-                "&password=" + request.getSenha() +
+                "?username=" + loginRequest.getUsuario() +
+                "&password=" + loginRequest.getSenha() +
                 "&format=json";
 
         return getResponse(url);
