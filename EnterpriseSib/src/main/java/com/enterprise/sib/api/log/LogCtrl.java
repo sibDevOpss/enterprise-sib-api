@@ -1,10 +1,7 @@
 package com.enterprise.sib.api.log;
 
-import com.enterprise.sib.api.cpf.CpfMassaReqMdl;
 import com.enterprise.sib.api.cpf.CpfReqMdl;
 import com.enterprise.sib.utilitarios.Utils;
-import com.google.gson.Gson;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +15,7 @@ public class LogCtrl {
 
 
 	@Autowired
-	private LogDAO logfDAO;
+	private LogDAO logDAO;
 
 
 
@@ -39,7 +36,7 @@ public class LogCtrl {
 		
 		DadosLogJPAMdl dados = carregaObjetoLogParaSalvar(dadosLog, retorno, indicadorSucessoBusca);
 
-		logfDAO.save(dados);
+		logDAO.save(dados);
 
 
 	}
@@ -101,7 +98,7 @@ public class LogCtrl {
 
 		List<DadosLogJPAMdl> listaLogsBase = new ArrayList<>();
 
-		for (DadosLogJPAMdl log : logfDAO.findAll()) {
+		for (DadosLogJPAMdl log : logDAO.findAll()) {
 			listaLogsBase.add(log);
 		}
 
@@ -112,7 +109,7 @@ public class LogCtrl {
 
 		List<DadosLogJPAMdl> listaLogsEncontrados = new ArrayList<>();
 
-		for (DadosLogJPAMdl log : logfDAO.findLogsByNomeOperadora(nomeOperadora)) {
+		for (DadosLogJPAMdl log : logDAO.findLogsByNomeOperadora(nomeOperadora)) {
 			listaLogsEncontrados.add(log);
 		}
 
@@ -123,7 +120,7 @@ public class LogCtrl {
 
 		List<DadosLogJPAMdl> listaLogsEncontrados = new ArrayList<>();
 
-		for (DadosLogJPAMdl log : logfDAO.findLogsByNomeUsuario(nomeUsuario)) {
+		for (DadosLogJPAMdl log : logDAO.findLogsByNomeUsuario(nomeUsuario)) {
 			listaLogsEncontrados.add(log);
 		}
 
@@ -134,7 +131,7 @@ public class LogCtrl {
 
 		List<DadosLogJPAMdl> listaLogsEncontrados = new ArrayList<>();
 
-		for (DadosLogJPAMdl log : logfDAO.findLogsByCodigoOperadora(codigoOperadora)) {
+		for (DadosLogJPAMdl log : logDAO.findLogsByCodigoOperadora(codigoOperadora)) {
 			listaLogsEncontrados.add(log);
 		}
 
@@ -146,7 +143,7 @@ public class LogCtrl {
 
 		List<DadosLogJPAMdl> listaLogsEncontrados = new ArrayList<>();
 
-		for (DadosLogJPAMdl log : logfDAO.findLogsByOperadoraCnpj(operadoraCNPJ)) {
+		for (DadosLogJPAMdl log : logDAO.findLogsByOperadoraCnpj(operadoraCNPJ)) {
 			listaLogsEncontrados.add(log);
 		}
 
@@ -158,7 +155,7 @@ public class LogCtrl {
 
 		List<DadosLogJPAMdl> listaLogsEncontrados = new ArrayList<>();
 
-		for (DadosLogJPAMdl log : logfDAO.findLogsByUsuarioId(usuarioId)) {
+		for (DadosLogJPAMdl log : logDAO.findLogsByUsuarioId(usuarioId)) {
 			listaLogsEncontrados.add(log);
 		}
 

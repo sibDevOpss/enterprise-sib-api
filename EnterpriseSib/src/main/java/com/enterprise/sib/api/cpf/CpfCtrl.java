@@ -15,50 +15,33 @@ import java.util.List;
 
 @Service
 public class CpfCtrl {
-	
-	
-	@Autowired
-	private CpfDAO cpfDAO;
-	
-	
+
+    @Autowired
+    private CpfDAO cpfDAO;
+
     private CpfRespMdl getResponse(String url) {
 
         Connection<CpfRespMdl> connection = new Connection<>();
         String response = connection.getResponse(url);
         return connection.setResponse(obterJsonApi(response), CpfRespMdl.class);
     }
-    
-    public CpfDadosJPAMdl converteJsonStringParaClasseCpfDados (String resultadoBuscaBanco) {
-    	
-    	Gson g = new Gson();
-		
-		CpfDadosJPAMdl cpfDados = g.fromJson(resultadoBuscaBanco, CpfDadosJPAMdl.class);
-		
-		return cpfDados;
-    }
-    
-    
-    public String consultaCpfBaseAntes (String cpf) {
-    	
-    	CpfDadosJPAMdl dadosCpf = cpfDAO.findCpf(cpf);
-    	
-    	if (dadosCpf == null) {
-			return "false";
-			
-		} else {	
-			
-			Gson g = new Gson();
-			String busca = g.toJson(dadosCpf);
-			return busca;
-			
-		}
-    	
+
+    String consultarCpfBaseDados(String cpf) {
+
+        CpfDadosJPAMdl dadosCpf = cpfDAO.findCpf(cpf);
+
+        if (dadosCpf == null) {
+            return "false";
+        } else {
+            Gson g = new Gson();
+            return g.toJson(dadosCpf);
+        }
+
     }
 
-    public CpfRespMdl consultarCpf(CpfReqMdl request) {
+    CpfRespMdl consultarCpfApi(CpfReqMdl request) {
 
         String dataNasc = request.getDataNascimento() != null ? "&dt_Nascimento=" + request.getDataNascimento() : "";
-
 
         String url = "https://dataintelligence.newdbase.com.br:443/api/5c45a388?" +
                 "nr_CPF=" + request.getCpf() + dataNasc +
@@ -89,10 +72,6 @@ public class CpfCtrl {
     }
 
 
-
- 
-
-
     private CpfRespMdl[] obtemListaCpfMock() {
 
         BufferedReader reader;
@@ -112,22 +91,7 @@ public class CpfCtrl {
         return listaCpfMock;
     }
 
-    public CpfRespMdl criarCpfTeste() {
-        CpfRespMdl pessoa = new CpfRespMdl();
-        pessoa.setCPF("01895845130");
-        pessoa.setNome("RENATO SOUZA DE ALMEIDA");
-        pessoa.setSituacao("REGULAR");
-        pessoa.setDigito("00");
-        pessoa.setDataNascimento("26/04/1988");
-        pessoa.setAnoObito("0000");
-        pessoa.setDataInscricao("31/03/2004");
-        pessoa.setDataHora("07/08/2019 21:02:10");
-        pessoa.setComprovante("8DF2.0582.757F.7C74");
-
-        return pessoa;
-    }
-
-    public String obterJsonApi(String responseUrl) {
+    private String obterJsonApi(String responseUrl) {
 
         JSONObject json = new JSONObject(responseUrl);
         JSONObject response = json.getJSONObject("Response");
@@ -139,6 +103,19 @@ public class CpfCtrl {
         }
 
         return output.toString();
+    }
+
+    CpfDadosJPAMdl salvarBaseDados(CpfRespMdl cpfRespMdl) {
+
+        CpfDadosJPAMdl cpfBaseDados = new CpfDadosJPAMdl();
+        Gson gson = new Gson();
+
+        cpfBaseDados.setCpf(cpfRespMdl.getCPF());
+        cpfBaseDados.setBody(gson.toJson(cpfRespMdl));
+
+        cpfDAO.save(cpfBaseDados);
+
+        return cpfBaseDados;
     }
 
 }
