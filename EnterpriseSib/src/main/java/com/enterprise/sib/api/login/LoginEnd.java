@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api
 @Service
 @RestController
-@RequestMapping(
-        path = Constant.URL_MAIN,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = Constant.URL_MAIN, produces = MediaType.APPLICATION_JSON_VALUE)
 public class LoginEnd {
 
     @Autowired
