@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Api
 @Service
 @RestController
@@ -38,27 +40,30 @@ public class CpfEnd {
 
     @ApiOperation(value = "Consulta de cpf", tags = Constant.TAG_DEFAULT)
     @PostMapping(path = "/consultar_cpf")
-    public ResponseEntity<String> obtemCpf(@RequestBody CpfReqMdl params) {
+    public ResponseEntity<String> obtemCpf(@RequestBody CpfReqMdl params, HttpServletRequest request) {
 
         CpfDadosJPAMdl cpfDados;
         boolean indicadorSucessoBusca = false;
 
         String resultadoBuscaBanco = cpfController.consultarCpfBaseDados(params.getCpf());
 
-        if (resultadoBuscaBanco.equalsIgnoreCase("false")) {
-            // Consulta CPF Api
-            CpfRespMdl cpfRespMdl = cpfController.consultarCpfApi(params);
-            cpfDados = cpfController.salvarBaseDados(cpfRespMdl);
-        } else {
-            // Consulta CPF Base de Dados
-            Connection<CpfDadosJPAMdl> connection = new Connection<>();
-            cpfDados = connection.setResponse(resultadoBuscaBanco, CpfDadosJPAMdl.class);
-            indicadorSucessoBusca = true;
-        }
+//        if (resultadoBuscaBanco.equalsIgnoreCase("false")) {
+//            // Consulta CPF Api
+//            CpfRespMdl cpfRespMdl = cpfController.consultarCpfApi(params);
+//            cpfDados = cpfController.salvarBaseDados(cpfRespMdl);
+//        } else {
+//            // Consulta CPF Base de Dados
+//            Connection<CpfDadosJPAMdl> connection = new Connection<>();
+//            cpfDados = connection.setResponse(resultadoBuscaBanco, CpfDadosJPAMdl.class);
+//            indicadorSucessoBusca = true;
+//        }
 
-        logController.gravaLog(params, cpfDados.getBody(), indicadorSucessoBusca);
+//        logController.gravaLog(params, cpfDados.getBody(), indicadorSucessoBusca, request);
+//        return new ResponseEntity<>(cpfDados.getBody(), HttpStatus.OK);
+        logController.gravaLog(params, resultadoBuscaBanco, indicadorSucessoBusca, request);
+        return new ResponseEntity<>(resultadoBuscaBanco, HttpStatus.OK);
 
-        return new ResponseEntity<>(cpfDados.getBody(), HttpStatus.OK);
+
     }
 
     @ApiOperation(value = "Consulta de cpf em massa", tags = Constant.TAG_DEFAULT)

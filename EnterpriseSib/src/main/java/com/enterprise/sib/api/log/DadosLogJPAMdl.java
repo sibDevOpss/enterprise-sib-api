@@ -133,7 +133,7 @@ public class DadosLogJPAMdl {
 	}
 	
 	
-	@Column(name = "IP", length = 50)
+	@Column(name = "IP", length = 100)
 	public String getIp() {
 		return ip;
 	}
@@ -142,7 +142,7 @@ public class DadosLogJPAMdl {
 	}
 	
 	
-	@Column(name = "Host", length = 50)
+	@Column(name = "Host", length = 100)
 	public String getHost() {
 		return host;
 	}

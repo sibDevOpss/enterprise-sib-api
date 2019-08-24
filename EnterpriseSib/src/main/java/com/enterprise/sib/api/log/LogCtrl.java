@@ -10,6 +10,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 public class LogCtrl {
 
@@ -17,7 +19,7 @@ public class LogCtrl {
     private LogDAO logDAO;
 
     // Metodo para gravar o log do endpoint "consultar_cpf" , serve para gravar 1 cpf no log
-    public void gravaLog(CpfReqMdl params, String retorno, boolean indicadorSucessoBusca) {
+    public void gravaLog(CpfReqMdl params, String retorno, boolean indicadorSucessoBusca, HttpServletRequest request) {
 
         Utils utilitarios = new Utils();
 
@@ -31,7 +33,7 @@ public class LogCtrl {
 
         dadosLog = utilitarios.defineDadosLogCpf(dadosLog, params);
 
-        DadosLogJPAMdl dados = carregaObjetoLogParaSalvar(dadosLog, retorno, indicadorSucessoBusca);
+        DadosLogJPAMdl dados = carregaObjetoLogParaSalvar(dadosLog, retorno, indicadorSucessoBusca, request);
 
         logDAO.save(dados);
 
@@ -69,7 +71,7 @@ public class LogCtrl {
     //
     //	}
 
-    private DadosLogJPAMdl carregaObjetoLogParaSalvar(DadosLogCpfMdl dadosLog, String retorno, boolean indicadorSucessoBusca) {
+    private DadosLogJPAMdl carregaObjetoLogParaSalvar(DadosLogCpfMdl dadosLog, String retorno, boolean indicadorSucessoBusca, HttpServletRequest request) {
 
         DadosLogJPAMdl dadosJPA = new DadosLogJPAMdl();
 
@@ -85,8 +87,8 @@ public class LogCtrl {
         dadosJPA.setDataNascimento(dadosLog.getParamsConsulta().getDataNascimento());
         dadosJPA.setData(dadosLog.getDataHora().getData());
         dadosJPA.setHora(dadosLog.getDataHora().getHora());
-        //dadosJPA.setIp("IP");
-        //dadosJPA.setHost("HOST");
+        dadosJPA.setIp(request.getRemoteAddr());
+        dadosJPA.setHost(request.getRemoteHost());
 
         return dadosJPA;
     }
