@@ -47,21 +47,19 @@ public class CpfEnd {
 
         String resultadoBuscaBanco = cpfController.consultarCpfBaseDados(params.getCpf());
 
-//        if (resultadoBuscaBanco.equalsIgnoreCase("false")) {
-//            // Consulta CPF Api
-//            CpfRespMdl cpfRespMdl = cpfController.consultarCpfApi(params);
-//            cpfDados = cpfController.salvarBaseDados(cpfRespMdl);
-//        } else {
-//            // Consulta CPF Base de Dados
-//            Connection<CpfDadosJPAMdl> connection = new Connection<>();
-//            cpfDados = connection.setResponse(resultadoBuscaBanco, CpfDadosJPAMdl.class);
-//            indicadorSucessoBusca = true;
-//        }
+        if (resultadoBuscaBanco.equalsIgnoreCase("false")) {
+            // Consulta CPF Api
+            CpfRespMdl cpfRespMdl = cpfController.consultarCpfApi(params);
+            cpfDados = cpfController.salvarBaseDados(cpfRespMdl);
+        } else {
+            // Consulta CPF Base de Dados
+            Connection<CpfDadosJPAMdl> connection = new Connection<>();
+            cpfDados = connection.setResponse(resultadoBuscaBanco, CpfDadosJPAMdl.class);
+            indicadorSucessoBusca = true;
+        }
 
-//        logController.gravaLog(params, cpfDados.getBody(), indicadorSucessoBusca, request);
-//        return new ResponseEntity<>(cpfDados.getBody(), HttpStatus.OK);
-        logController.gravaLog(params, resultadoBuscaBanco, indicadorSucessoBusca, request);
-        return new ResponseEntity<>(resultadoBuscaBanco, HttpStatus.OK);
+        logController.gravaLog(params, cpfDados.getBody(), indicadorSucessoBusca, request);
+        return new ResponseEntity<>(cpfDados.getBody(), HttpStatus.OK);
 
 
     }
