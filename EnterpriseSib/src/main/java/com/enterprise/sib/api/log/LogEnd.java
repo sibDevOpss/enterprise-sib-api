@@ -1,6 +1,6 @@
 package com.enterprise.sib.api.log;
 
-import com.enterprise.sib.utilitarios.Constant;
+import com.enterprise.sib.utils.Constant;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,79 +15,56 @@ import java.util.List;
 @Api
 @Service
 @RestController
-@RequestMapping(Constant.URL_MAIN + Constant.URL_LOGS)
-public class LogEnd {
-	
-	@Autowired
-	private LogCtrl logController;
+@RequestMapping(
+        path = Constant.URL_MAIN + Constant.URL_LOGS,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+class LogEnd {
 
+    @Autowired
+    private LogCtrl logController;
 
-	@ApiOperation(value = "Obter todos os logs da base", tags = Constant.TAG_LOGS)
-	@GetMapping(path = "/obter_todos", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DadosLogJPAMdl>> obtemListaDadosLogBase () {
-        
-		List<DadosLogJPAMdl> listaLogsBase = logController.obtemTodosLogBase();
-
-		return new ResponseEntity<>(listaLogsBase, HttpStatus.ACCEPTED);
+    @ApiOperation(value = "Obter Logs por CNPJ da Operadora", tags = Constant.TAG_LOGS)
+    @PostMapping(path = "/consultar_por_cnpj_operadora")
+    public ResponseEntity<List<LogMdlBaseDados>> consultarCnpjOperadora(String operadoraCNPJ) {
+        return new ResponseEntity<>(logController.obtemLogsPorOperadoraCnpj(operadoraCNPJ), HttpStatus.OK);
     }
 
-	@ApiOperation(value = "Obter Logs de uma operadora", tags = Constant.TAG_LOGS)
-	@PostMapping(path = "/consulta_por_nome_operadora", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DadosLogJPAMdl>> obtemLogsNomeOperadora (@RequestBody String nomeOperadora) {
-        
-		List<DadosLogJPAMdl> listaLogsEncontrados = logController.obtemLogsDeUmaOperadora(nomeOperadora);
-
-		return new ResponseEntity<>(listaLogsEncontrados, HttpStatus.ACCEPTED);
+    @ApiOperation(value = "Obter Logs por Código da Operadora", tags = Constant.TAG_LOGS)
+    @PostMapping(path = "/consultar_por_id_operadora")
+    public ResponseEntity<List<LogMdlBaseDados>> consultarCodigoOperadora(@RequestBody int operadoraId) {
+        return new ResponseEntity<>(logController.obtemLogsPorCodigoOperadora(operadoraId), HttpStatus.OK);
     }
 
-
-	@ApiOperation(value = "Obter Logs de um usuario", tags = Constant.TAG_LOGS)
-	@PostMapping(path = "/consulta_por_nome_usuario", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DadosLogJPAMdl>> obtemLogsNomeUsuario (@RequestBody String nomeUsuario) {
-        
-		List<DadosLogJPAMdl> listaLogsEncontrados = logController.obtemLogsPorNomeUsuario(nomeUsuario);
-
-		return new ResponseEntity<>(listaLogsEncontrados, HttpStatus.ACCEPTED);
+    @ApiOperation(value = "Obter Logs por ID de Usuário", tags = Constant.TAG_LOGS)
+    @PostMapping(path = "/consultar_por_id_usuario")
+    public ResponseEntity<List<LogMdlBaseDados>> consultarIdUsuario(String usuarioId) {
+        return new ResponseEntity<>(logController.obtemLogsUsuarioId(usuarioId), HttpStatus.OK);
     }
 
-
-	@ApiOperation(value = "Obter Logs de uma operadora por seu código", tags = Constant.TAG_LOGS)
-	@PostMapping(path = "/consulta_por_codigo_operadora", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DadosLogJPAMdl>> obtemLogsCodigoOperadora (@RequestBody int codigoOperadora) {
-        
-		List<DadosLogJPAMdl> listaLogsEncontrados = logController.obtemLogsPorCodigoOperadora(codigoOperadora);
-
-		return new ResponseEntity<>(listaLogsEncontrados, HttpStatus.ACCEPTED);
+    @ApiOperation(value = "Obter Logs por Operadora", tags = Constant.TAG_LOGS)
+    @PostMapping(path = "/consultar_por_nome_operadora")
+    public ResponseEntity<List<LogMdlBaseDados>> consultarNomeOperadora(@RequestBody String nomeOperadora) {
+        return new ResponseEntity<>(logController.obtemLogsDeUmaOperadora(nomeOperadora), HttpStatus.OK);
     }
 
-
-	@ApiOperation(value = "Obter Logs de uma operadora por seu CNPJ", tags = Constant.TAG_LOGS)
-	@PostMapping(path = "/consulta_por_operadora_cnpj", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DadosLogJPAMdl>> obtemLogsOperadoraCnpj (String operadoraCNPJ) {
-		
-		List<DadosLogJPAMdl> listaLogsEncontrados = logController.obtemLogsPorOperadoraCnpj(operadoraCNPJ);
-		
-		return new ResponseEntity<>(listaLogsEncontrados, HttpStatus.ACCEPTED);
+    @ApiOperation(value = "Obter Logs por Usuario", tags = Constant.TAG_LOGS)
+    @PostMapping(path = "/consultar_por_nome_usuario")
+    public ResponseEntity<List<LogMdlBaseDados>> consultarNomeUsuario(@RequestBody String nomeUsuario) {
+        return new ResponseEntity<>(logController.obtemLogsPorNomeUsuario(nomeUsuario), HttpStatus.OK);
     }
 
-
-	@ApiOperation(value = "Obter Logs de um usuario pelo seu ID", tags = Constant.TAG_LOGS)
-	@PostMapping(path = "/consulta_por_usuario_id", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<DadosLogJPAMdl>> obtemLogsUsuarioId (String usuarioId) {
-		
-		List<DadosLogJPAMdl> listaLogsEncontrados = logController.obtemLogsUsuarioId(usuarioId);
-		
-		return new ResponseEntity<>(listaLogsEncontrados, HttpStatus.ACCEPTED);
+    @ApiOperation(value = "Obter Quantidade Total de Logs", tags = Constant.TAG_LOGS)
+    @GetMapping(path = "/consultar_quantidade_total_logs")
+    public ResponseEntity<String> consultarQuantidadeTotalLogs() {
+        return new ResponseEntity<>(
+                "{\"Quantidade\" : \"" + logController.obtemQuantidadeRegistrosLogNoBanco() + "\"}",
+                HttpStatus.OK);
     }
 
-
-	@ApiOperation(value = "Obter quantidade total de logs na base", tags = Constant.TAG_LOGS)
-	@GetMapping(path = "/consulta_quantidade_total", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> obtemQuantidadeTotalLogsNoBanco () {
-
-		return new ResponseEntity<>("{\"Quantidade\" : \"" + logController.obtemQuantidadeRegistrosLogNoBanco() + "\"}", HttpStatus.ACCEPTED);
+    @ApiOperation(value = "Obter Todos os Logs da Base de Dados", tags = Constant.TAG_LOGS)
+    @GetMapping(path = "/obter_todos")
+    public ResponseEntity<List<LogMdlBaseDados>> obterTodos() {
+        return new ResponseEntity<>(logController.obtemTodosLogBase(), HttpStatus.OK);
     }
-	
-	
 
 }

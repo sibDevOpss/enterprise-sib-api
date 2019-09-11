@@ -1,6 +1,6 @@
 package com.enterprise.sib.api.cpf;
 
-public class CpfRespMdl {
+class CpfMdlResp {
 
     private String CPF;
     private String Nome;

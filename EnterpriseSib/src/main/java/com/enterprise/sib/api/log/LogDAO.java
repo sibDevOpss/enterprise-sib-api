@@ -1,34 +1,28 @@
 package com.enterprise.sib.api.log;
 
-import java.util.List;
-
+import com.enterprise.sib.utils.Constant;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import com.enterprise.sib.api.log.DadosLogJPAMdl;
+
+import java.util.List;
 
 @Repository
-public interface LogDAO extends CrudRepository<DadosLogJPAMdl, Integer>{
-	
-	@Query(value = "select * from logsss where operadora_nome = ?1", nativeQuery = true)
-	List<DadosLogJPAMdl> findLogsByNomeOperadora (String nomeOperadora);
-	
-	
-	@Query(value = "select * from logsss where usuario_nome = ?1", nativeQuery = true)
-	List<DadosLogJPAMdl> findLogsByNomeUsuario (String nomeUsuario);
-	
-	
-	@Query(value = "select * from logsss where operadora_id = ?1", nativeQuery = true)
-	List<DadosLogJPAMdl> findLogsByCodigoOperadora (int codigoOperadora);
-	
-	
-	@Query(value = "select * from logsss where usuario_id = ?1", nativeQuery = true)
-	List<DadosLogJPAMdl> findLogsByUsuarioId (String usuarioId);
-	
-	
-	@Query(value = "select * from logsss where operadoraCnpj = ?1", nativeQuery = true)
-	List<DadosLogJPAMdl> findLogsByOperadoraCnpj (String operadoraCNPJ);
-	
-	
+public interface LogDAO extends CrudRepository<LogMdlBaseDados, Integer> {
+
+    @Query(value = "SELECT * FROM " + Constant.TABLE_LOG + " WHERE operadora_cnpj = ?1", nativeQuery = true)
+    List<LogMdlBaseDados> findLogsByOperadoraCnpj(String operadoraCNPJ);
+
+    @Query(value = "SELECT * FROM " + Constant.TABLE_LOG + " WHERE operadora_id = ?1", nativeQuery = true)
+    List<LogMdlBaseDados> findLogsByOperadoraId(int operadoraId);
+
+    @Query(value = "SELECT * FROM " + Constant.TABLE_LOG + " WHERE usuario_id = ?1", nativeQuery = true)
+    List<LogMdlBaseDados> findLogsByUsuarioId(String usuarioId);
+
+    @Query(value = "SELECT * FROM " + Constant.TABLE_LOG + " WHERE operadora_nome = ?1", nativeQuery = true)
+    List<LogMdlBaseDados> findLogsByNomeOperadora(String nomeOperadora);
+
+    @Query(value = "SELECT * FROM " + Constant.TABLE_LOG + " WHERE usuario_nome = ?1", nativeQuery = true)
+    List<LogMdlBaseDados> findLogsByNomeUsuario(String nomeUsuario);
 
 }

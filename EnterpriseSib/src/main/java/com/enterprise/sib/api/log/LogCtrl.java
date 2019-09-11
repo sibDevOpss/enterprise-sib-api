@@ -1,16 +1,15 @@
 package com.enterprise.sib.api.log;
 
-import com.enterprise.sib.api.cpf.CpfReqMdl;
-import com.enterprise.sib.utilitarios.Utils;
+import com.enterprise.sib.api.cpf.CpfMdlReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class LogCtrl {
@@ -18,109 +17,62 @@ public class LogCtrl {
     @Autowired
     private LogDAO logDAO;
 
-    // Metodo para gravar o log do endpoint "consultar_cpf" , serve para gravar 1 cpf no log
-    public void gravaLog(CpfReqMdl params, String retorno, boolean indicadorSucessoBusca, HttpServletRequest request) {
+    public void salvarLogBaseDados(CpfMdlReq params, String retorno, boolean indicadorSucessoBusca, HttpServletRequest request) {
 
-        Utils utilitarios = new Utils();
-
-        String mascaraDataHora = "dd-MM-yyyy HH:mm:ss";
-
-        LocalDateTime dataHoraConsulta = utilitarios.obtemDataHoraAtual();
-
-        DateTimeFormatter formataDataHora = utilitarios.obtemTipoDataHoraFormatado(mascaraDataHora);
-
-        DadosLogCpfMdl dadosLog = utilitarios.defineDataHoraLocal(dataHoraConsulta, formataDataHora);
-
-        dadosLog = utilitarios.defineDadosLogCpf(dadosLog, params);
-
-        DadosLogJPAMdl dados = carregaObjetoLogParaSalvar(dadosLog, retorno, indicadorSucessoBusca, request);
+        DataHoraMdl dataHoraLocal = defineDataHoraLocal();
+        LogMdlCpf log = new LogMdlCpf(params, dataHoraLocal);
+        LogMdlBaseDados dados = new LogMdlBaseDados(log, retorno, indicadorSucessoBusca, request);
 
         logDAO.save(dados);
-
-
     }
 
-    // Metodo para gravar o log do endpoint "consultar_cpf_massa" , serve para gravar VÁRIOS cpfs no log
-    //	public void gravaLogCpfEmMassa(CpfMassaReqMdl params) {
-    //
-    //		Utils utilitarios = new Utils();
-    //
-    //		String mascaraDataHora = "dd-MM-yyyy HH:mm:ss";
-    //
-    //		String pathSaidaDadosLog = "C:\\Users\\Godzilla\\Desktop\\saidas\\";
-    //
-    //		String extensaoArqLog = ".txt";
-    //
-    //		String cpfsConcatenados = utilitarios.concatenaListaCpfEmString(params.getListaCpfs());
-    //
-    //		LocalDateTime dataHoraConsulta = utilitarios.obtemDataHoraAtual();
-    //
-    //		DateTimeFormatter formataDataHora = utilitarios.obtemTipoDataHoraFormatado(mascaraDataHora);
-    //
-    //		DadosLogCpfMdl dadosLog = utilitarios.defineDataHoraLocal(dataHoraConsulta, formataDataHora);
-    //
-    //		dadosLog = utilitarios.defineDadosLogCpfMassa(dadosLog, params,cpfsConcatenados);
-    //
-    //		String infoLog = utilitarios.criaDadosLog(dadosLog);
-    //
-    //		String nomeArqLog = utilitarios.obtemNomeArqSaidaLog(dadosLog, extensaoArqLog);
-    //
-    //		//utilitarios.gravarArquivoLog(pathSaidaDadosLog, nomeArqLog, infoLog);
-    //
-    //		salvarLogNoBanco (dadosLog);
-    //
-    //	}
+    private DataHoraMdl defineDataHoraLocal() {
 
-    private DadosLogJPAMdl carregaObjetoLogParaSalvar(DadosLogCpfMdl dadosLog, String retorno, boolean indicadorSucessoBusca, HttpServletRequest request) {
+        LocalDateTime dataHoraConsulta = LocalDateTime.now();
+        DateTimeFormatter formatoDataHora = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
-        DadosLogJPAMdl dadosJPA = new DadosLogJPAMdl();
+        String horaDataLocal = dataHoraConsulta.format(formatoDataHora);
+        List<String> dataHora = Arrays.asList(horaDataLocal.split(" "));
 
-        dadosJPA.setUsuarioId(dadosLog.getParamsConsulta().getUsuarioId());
-        dadosJPA.setUsuarioNome(dadosLog.getParamsConsulta().getUsuarioNome());
-        dadosJPA.setOperadoraId(dadosLog.getParamsConsulta().getOperadoraId());
-        dadosJPA.setOperadoraNome(dadosLog.getParamsConsulta().getOperadoraNome());
-        dadosJPA.setOperadoraCnpj(dadosLog.getParamsConsulta().getOperadoraCnpj());
-        dadosJPA.setBody(dadosLog.getJsonEntradaEndpoint());
-        dadosJPA.setRetorno(retorno);
-        dadosJPA.setSucesso(indicadorSucessoBusca);
-        dadosJPA.setCpf(dadosLog.getParamsConsulta().getCpf());
-        dadosJPA.setDataNascimento(dadosLog.getParamsConsulta().getDataNascimento());
-        dadosJPA.setData(dadosLog.getDataHora().getData());
-        dadosJPA.setHora(dadosLog.getDataHora().getHora());
-        dadosJPA.setIp(request.getRemoteAddr());
-        dadosJPA.setHost(request.getRemoteHost());
+        DataHoraMdl dataHoraMdl = new DataHoraMdl();
+        dataHoraMdl.setData(dataHora.get(0));
+        dataHoraMdl.setHora(dataHora.get(1));
 
-        return dadosJPA;
+        return dataHoraMdl;
     }
 
-    List<DadosLogJPAMdl> obtemTodosLogBase() {
+    /* ==============================================================
+                        CONSULTAS NA BASE DE DADOS
+    ==============================================================*/
 
-        List<DadosLogJPAMdl> listaLogsBase = new ArrayList<>();
+    List<LogMdlBaseDados> obtemTodosLogBase() {
 
-        for (DadosLogJPAMdl log : logDAO.findAll()) {
+        List<LogMdlBaseDados> listaLogsBase = new ArrayList<>();
+
+        for (LogMdlBaseDados log : logDAO.findAll()) {
             listaLogsBase.add(log);
         }
 
         return listaLogsBase;
     }
 
-    List<DadosLogJPAMdl> obtemLogsDeUmaOperadora(String nomeOperadora) {
+    List<LogMdlBaseDados> obtemLogsDeUmaOperadora(String nomeOperadora) {
         return new ArrayList<>(logDAO.findLogsByNomeOperadora(nomeOperadora));
     }
 
-    List<DadosLogJPAMdl> obtemLogsPorNomeUsuario(String nomeUsuario) {
+    List<LogMdlBaseDados> obtemLogsPorNomeUsuario(String nomeUsuario) {
         return new ArrayList<>(logDAO.findLogsByNomeUsuario(nomeUsuario));
     }
 
-    List<DadosLogJPAMdl> obtemLogsPorCodigoOperadora(int codigoOperadora) {
-        return new ArrayList<>(logDAO.findLogsByCodigoOperadora(codigoOperadora));
+    List<LogMdlBaseDados> obtemLogsPorCodigoOperadora(int codigoOperadora) {
+        return new ArrayList<>(logDAO.findLogsByOperadoraId(codigoOperadora));
     }
 
-    List<DadosLogJPAMdl> obtemLogsPorOperadoraCnpj(String operadoraCNPJ) {
+    List<LogMdlBaseDados> obtemLogsPorOperadoraCnpj(String operadoraCNPJ) {
         return new ArrayList<>(logDAO.findLogsByOperadoraCnpj(operadoraCNPJ));
     }
 
-    List<DadosLogJPAMdl> obtemLogsUsuarioId(String usuarioId) {
+    List<LogMdlBaseDados> obtemLogsUsuarioId(String usuarioId) {
         return new ArrayList<>(logDAO.findLogsByUsuarioId(usuarioId));
     }
 

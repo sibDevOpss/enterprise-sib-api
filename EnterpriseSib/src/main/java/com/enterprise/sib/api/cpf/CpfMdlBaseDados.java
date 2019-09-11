@@ -1,19 +1,17 @@
 package com.enterprise.sib.api.cpf;
 
+import com.enterprise.sib.utils.Constant;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "cpfs")
-public class CpfDadosJPAMdl {
+@Table(name = Constant.TABLE_CPF)
+public class CpfMdlBaseDados {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
-    @Column(name = "cpf", length = 80)
     private String cpf;
-
-    @Column(name = "body", length = 600)
     private String body;
 
     public int getId() {

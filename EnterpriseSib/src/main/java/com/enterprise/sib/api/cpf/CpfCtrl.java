@@ -1,46 +1,28 @@
 package com.enterprise.sib.api.cpf;
 
-import com.enterprise.sib.utilitarios.Connection;
-import com.google.gson.Gson;
+import com.enterprise.sib.api.log.LogCtrl;
+import com.enterprise.sib.utils.Connection;
+import com.enterprise.sib.utils.JsonConverter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 @Service
-public class CpfCtrl {
+class CpfCtrl {
 
-    @SuppressWarnings("unused")
+    @Autowired
+    private CpfCtrl cpfController;
+
     @Autowired
     private CpfDAO cpfDAO;
 
-    private CpfRespMdl getResponse(String url) {
+    @Autowired
+    private LogCtrl logController;
 
-        Connection<CpfRespMdl> connection = new Connection<>();
-        String response = connection.getResponse(url);
-        return connection.setResponse(obterJsonApi(response), CpfRespMdl.class);
-    }
-
-    String consultarCpfBaseDados(String cpf) {
-
-        CpfDadosJPAMdl dadosCpf = cpfDAO.findCpf(cpf);
-
-        if (dadosCpf == null) {
-            return "false";
-        } else {
-            Gson g = new Gson();
-            return g.toJson(dadosCpf);
-        }
-
-    }
-
-    CpfRespMdl consultarCpfApi(CpfReqMdl request) {
+    private CpfMdlResp consultarCpfApi(CpfMdlReq request) {
 
         String dataNasc = request.getDataNascimento() != null ? "&dt_Nascimento=" + request.getDataNascimento() : "";
 
@@ -51,45 +33,47 @@ public class CpfCtrl {
         return getResponse(url);
     }
 
+    private String consultarCpfBaseDados(String cpf) {
 
-    public List<CpfRespMdl> obtemConsultaVariosCpfs(List<String> listaCpfConsultaParams) {
+        CpfMdlBaseDados dadosCpf = cpfDAO.findCpf(cpf);
 
-
-        CpfRespMdl[] listaCpfMock = obtemListaCpfMock();
-        ArrayList<CpfRespMdl> listaAchados = new ArrayList<>();
-
-        for (String cpfConsulta : listaCpfConsultaParams) {
-
-
-            for (CpfRespMdl cpfMock : listaCpfMock) {                        // Quando for pra valer
-                // Apagar tudo da linha 52 a 57 e
-                if (cpfConsulta.equalsIgnoreCase(cpfMock.getCPF())) {        // Substituir pela chamada da api da NewdBase
-                    listaAchados.add(cpfMock);                                // Passando como parametro a variável "cpfConsulta"
-                }                                                            // Em cada chamada
-            }                                                                // E salvar a resposta INTEIRA de cada CPF no
-        }                                                                    // Array "listaAchados"
-
-        return listaAchados;
-    }
-
-
-    private CpfRespMdl[] obtemListaCpfMock() {
-
-        BufferedReader reader;
-        CpfRespMdl[] listaCpfMock = {};
-        try {
-
-            reader = new BufferedReader(new FileReader("C:\\Users\\Godzilla\\Desktop\\Freelancer\\enterprise-sib-api\\EnterpriseSib\\CPFs Mock.json"));
-            Gson gs = new Gson();
-            listaCpfMock = gs.fromJson(reader, CpfRespMdl[].class);
-
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if (dadosCpf == null) {
+            return "false";
+        } else {
+            JsonConverter<CpfMdlBaseDados> jsonConverter = new JsonConverter<>();
+            return jsonConverter.toJson(dadosCpf);
         }
 
+    }
 
-        return listaCpfMock;
+    String efetuarConsultaCpf(CpfMdlReq params, HttpServletRequest request) {
+
+        CpfMdlBaseDados cpfDados;
+        boolean indicadorSucessoBusca = false;
+
+        String resultadoBuscaBanco = cpfController.consultarCpfBaseDados(params.getCpf());
+
+        if (resultadoBuscaBanco.equalsIgnoreCase("false")) {
+            // Consulta CPF Api
+            CpfMdlResp cpfMdlResp = cpfController.consultarCpfApi(params);
+            cpfDados = cpfController.salvarBaseDados(cpfMdlResp);
+        } else {
+            // Consulta CPF Base de Dados
+            JsonConverter<CpfMdlBaseDados> jsonConverter = new JsonConverter<>();
+            cpfDados = jsonConverter.fromJson(resultadoBuscaBanco, CpfMdlBaseDados.class);
+            indicadorSucessoBusca = true;
+        }
+
+        logController.salvarLogBaseDados(params, cpfDados.getBody(), indicadorSucessoBusca, request);
+        return cpfDados.getBody();
+    }
+
+    private CpfMdlResp getResponse(String url) {
+
+        JsonConverter<CpfMdlResp> jsonConverter = new JsonConverter<>();
+
+        String json = Connection.getResponse(url);
+        return jsonConverter.fromJson(obterJsonApi(json), CpfMdlResp.class);
     }
 
     private String obterJsonApi(String responseUrl) {
@@ -106,17 +90,15 @@ public class CpfCtrl {
         return output.toString();
     }
 
-    CpfDadosJPAMdl salvarBaseDados(CpfRespMdl cpfRespMdl) {
+    private CpfMdlBaseDados salvarBaseDados(CpfMdlResp cpfMdlResp) {
 
-        CpfDadosJPAMdl cpfBaseDados = new CpfDadosJPAMdl();
-        Gson gson = new Gson();
+        JsonConverter<CpfMdlBaseDados> jsonConverter = new JsonConverter<>();
 
-        cpfBaseDados.setCpf(cpfRespMdl.getCPF());
-        cpfBaseDados.setBody(gson.toJson(cpfRespMdl));
+        CpfMdlBaseDados cpfBaseDados = new CpfMdlBaseDados();
+        cpfBaseDados.setCpf(cpfMdlResp.getCPF());
+        cpfBaseDados.setBody(jsonConverter.toJson(cpfMdlResp));
 
         cpfDAO.save(cpfBaseDados);
-
         return cpfBaseDados;
     }
-
 }

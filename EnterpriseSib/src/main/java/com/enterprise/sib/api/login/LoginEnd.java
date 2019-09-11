@@ -1,6 +1,6 @@
 package com.enterprise.sib.api.login;
 
-import com.enterprise.sib.utilitarios.Constant;
+import com.enterprise.sib.utils.Constant;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Api
 @Service
 @RestController
-@RequestMapping(path = Constant.URL_MAIN, produces = MediaType.APPLICATION_JSON_VALUE)
-public class LoginEnd {
+@RequestMapping(
+        path = Constant.URL_MAIN,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+class LoginEnd {
 
     @Autowired
     private LoginCtrl loginController;
 
     @ApiOperation(value = "Login", tags = Constant.TAG_DEFAULT)
     @GetMapping(path = "/login")
-    public ResponseEntity<LoginRespMdl> login() {
+    public ResponseEntity<LoginMdlResp> login() {
         return new ResponseEntity<>(loginController.efetuarLogin(), HttpStatus.OK);
     }
 }

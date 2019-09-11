@@ -3,7 +3,7 @@ package com.enterprise.sib.api.login;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class LoginRespMdl {
+class LoginMdlResp {
 
     private String UserId;
     private String SessionId;
@@ -43,12 +43,15 @@ public class LoginRespMdl {
         DisplayName = displayName;
     }
 
-    public com.enterprise.sib.api.login.ResponseStatus getResponseStatus() {
+    public ResponseStatus getResponseStatus() {
         return ResponseStatus;
     }
 
-    public void setResponseStatus(com.enterprise.sib.api.login.ResponseStatus responseStatus) {
+    public void setResponseStatus(ResponseStatus responseStatus) {
         ResponseStatus = responseStatus;
     }
+}
+
+class ResponseStatus {
 
 }
