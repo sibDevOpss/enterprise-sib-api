@@ -1,4 +1,4 @@
-package com.enterprise.sib.api.cpf;
+package com.enterprise.sib.api.cep;
 
 import com.enterprise.sib.utils.Constant;
 import io.swagger.annotations.Api;
@@ -14,27 +14,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Api
 @Service
 @RestController
 @RequestMapping(
         path = Constant.URL_MAIN,
-        produces = MediaType.APPLICATION_JSON_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
-class CpfEnd {
+        produces = MediaType.APPLICATION_JSON_VALUE)
+public class CepEnd {
 
     @Autowired
-    private CpfCtrl cpfController;
+    private CepCtrl cepController;
 
-    @ApiOperation(value = "Consulta de cpf", tags = Constant.TAG_DEFAULT, response = CpfMdlResp.class)
-    @PostMapping(path = "/consultar_cpf")
-    public ResponseEntity<String> consultarCpf(@RequestBody CpfMdlReq params, HttpServletRequest request) {
+    @ApiOperation(value = "Consultar CEP", tags = Constant.TAG_DEFAULT)
+    @PostMapping(path = "/consultar_cep")
+    public ResponseEntity<CepMdlResp> consultarCep(@RequestBody CepMdlReq params) {
         try {
-            return new ResponseEntity<>(cpfController.efetuarConsultaCpf(params, request), HttpStatus.OK);
+            return new ResponseEntity<>(cepController.consultarCep(params), HttpStatus.OK);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário não logado!", e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CEP Inválido!", e);
         }
     }
+
 }
